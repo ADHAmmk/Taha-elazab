@@ -1,0 +1,705 @@
+
+<!-- كود 490 واتس js -->
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f6f7f2">
+  <meta name="description" content="منصة مدرستي للمفقودات: أبلغ عن غرض مفقود أو ساعد زميلك في العثور على ما فقده.">
+  <title>لُقطة | المفقودات المدرسية</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap');
+
+    :root {
+      --ink: #19372f;
+      --muted: #71827a;
+      --green: #24745d;
+      --green-dark: #1b5b49;
+      --lime: #d8ef91;
+      --cream: #f6f7f2;
+      --white: #fff;
+      --line: #e8ece5;
+      --soft: #edf3ec;
+      --orange: #f0a25b;
+      --shadow: 0 18px 45px rgba(32, 62, 48, .08);
+      font-family: "IBM Plex Sans Arabic", "DM Sans", Tahoma, sans-serif;
+      color: var(--ink);
+      background: var(--cream);
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 320px; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1160px, calc(100% - 48px)); margin: auto; }
+
+    .topbar { height: 76px; display: flex; align-items: center; border-bottom: 1px solid rgba(25,55,47,.07); }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 800; letter-spacing: -.7px; }
+    .brand-mark { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 13px; color: var(--white); background: var(--green); }
+    .brand-mark svg { width: 22px; }
+    .nav-links { display: flex; align-items: center; gap: 30px; color: #66766f; font-size: 14px; }
+    .nav-links a:hover { color: var(--green); }
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+    .school-pill { padding: 8px 13px; border: 1px solid var(--line); background: rgba(255,255,255,.7); border-radius: 99px; color: #65766e; font-size: 12px; }
+    .school-pill span { display: inline-block; width: 7px; height: 7px; margin-left: 6px; border-radius: 50%; background: #69ad73; }
+
+    .hero { position: relative; overflow: hidden; padding: 72px 0 60px; }
+    .hero::before { content: ""; position: absolute; width: 420px; height: 420px; top: -250px; left: -125px; border: 1px solid rgba(36,116,93,.1); border-radius: 50%; box-shadow: 0 0 0 45px rgba(36,116,93,.025), 0 0 0 90px rgba(36,116,93,.02); pointer-events: none; }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 58px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 18px; padding: 7px 12px; border: 1px solid #dfe9d9; border-radius: 99px; color: var(--green); background: #eef4e9; font-size: 12px; font-weight: 600; }
+    .eyebrow svg { width: 15px; height: 15px; }
+    h1 { max-width: 580px; margin: 0; font-size: clamp(38px, 5vw, 62px); line-height: 1.22; letter-spacing: -2px; }
+    h1 em { position: relative; z-index: 0; font-style: normal; white-space: nowrap; }
+    h1 em::after { content: ""; position: absolute; z-index: -1; right: -4px; left: -4px; bottom: 5px; height: 15px; border-radius: 8px; background: var(--lime); }
+    .hero-copy { max-width: 470px; margin: 18px 0 26px; color: var(--muted); font-size: 16px; line-height: 1.9; }
+    .hero-buttons { display: flex; align-items: center; gap: 12px; }
+    .button { min-height: 46px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 0 18px; border: 0; border-radius: 12px; font-weight: 600; font-size: 14px; transition: .18s ease; }
+    .button:hover { transform: translateY(-2px); }
+    .button-primary { color: white; background: var(--green); box-shadow: 0 8px 18px rgba(36,116,93,.17); }
+    .button-primary:hover { background: var(--green-dark); }
+    .button-light { color: var(--ink); border: 1px solid var(--line); background: white; }
+    .button svg { width: 17px; height: 17px; }
+    .hero-note { display: flex; align-items: center; gap: 9px; margin-top: 28px; color: #7b8981; font-size: 12px; }
+    .avatar-stack { display: flex; direction: ltr; }
+    .avatar-stack span { width: 25px; height: 25px; display: grid; place-items: center; margin-left: -7px; border: 2px solid var(--cream); border-radius: 50%; color: #456050; background: #dce8d9; font-size: 10px; }
+    .avatar-stack span:nth-child(2) { background: #f6dfc4; }
+    .avatar-stack span:nth-child(3) { background: #dae5f1; }
+
+    .hero-art { min-height: 355px; position: relative; display: grid; place-items: center; }
+    .art-blob { position: absolute; width: 330px; height: 300px; border-radius: 49% 51% 42% 58% / 50% 44% 56% 50%; background: #e7efdd; transform: rotate(-8deg); }
+    .lost-card { z-index: 1; width: 260px; padding: 16px; border: 1px solid rgba(255,255,255,.8); border-radius: 20px; background: rgba(255,255,255,.91); box-shadow: 0 25px 65px rgba(40,70,51,.14); transform: rotate(-5deg); }
+    .lost-card-top { display: flex; justify-content: space-between; align-items: center; color: #839087; font-size: 11px; }
+    .mini-tag { padding: 5px 9px; border-radius: 99px; color: #9a6637; background: #fff1df; font-size: 10px; }
+    .bag-illustration { height: 165px; display: grid; place-items: center; margin: 14px 0 12px; overflow: hidden; border-radius: 14px; background: linear-gradient(145deg,#f3eddf,#e7eddc); }
+    .bag-illustration svg { width: 130px; height: 145px; filter: drop-shadow(0 11px 8px rgba(63,64,39,.16)); }
+    .lost-card h3 { margin: 0; font-size: 16px; }
+    .lost-card p { margin: 4px 0 0; color: var(--muted); font-size: 11px; }
+    .float-note { position: absolute; z-index: 2; display: flex; align-items: center; gap: 9px; padding: 11px 14px; border: 1px solid #eef0e8; border-radius: 13px; background: white; box-shadow: 0 10px 30px rgba(29,59,43,.09); font-size: 11px; }
+    .float-note strong { display: block; font-size: 12px; }
+    .float-note small { color: var(--muted); }
+    .float-icon { width: 31px; height: 31px; display: grid; place-items: center; border-radius: 10px; background: #f0f4e7; font-size: 15px; }
+    .note-one { top: 47px; right: 0; transform: rotate(4deg); }
+    .note-two { bottom: 40px; left: -3px; transform: rotate(3deg); }
+    .sparkle { position: absolute; color: #b9d16b; font-size: 25px; }
+    .sparkle-one { top: 32px; left: 48px; }
+    .sparkle-two { right: 32px; bottom: 43px; font-size: 17px; }
+
+    .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; margin: 4px 0 68px; border: 1px solid var(--line); border-radius: 16px; background: var(--line); overflow: hidden; }
+    .stat { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 19px; background: rgba(255,255,255,.65); }
+    .stat-icon { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 12px; color: var(--green); background: #edf3e8; }
+    .stat-icon svg { width: 18px; }
+    .stat strong { display: block; font-family: "DM Sans", sans-serif; font-size: 19px; line-height: 1.2; }
+    .stat span { color: var(--muted); font-size: 11px; }
+
+    .section { padding-bottom: 82px; scroll-margin-top: 24px; }
+    .section-heading { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 22px; }
+    .section-kicker { margin: 0 0 5px; color: var(--green); font-size: 12px; font-weight: 700; }
+    h2 { margin: 0; font-size: 28px; letter-spacing: -.7px; }
+    .section-subtitle { margin: 7px 0 0; color: var(--muted); font-size: 13px; }
+    .text-link { display: inline-flex; align-items: center; gap: 5px; color: var(--green); font-size: 13px; font-weight: 600; }
+
+    .toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .search-wrap { position: relative; flex: 1; }
+    .search-wrap svg { position: absolute; right: 15px; top: 50%; width: 18px; color: #89958d; transform: translateY(-50%); pointer-events: none; }
+    .search-input { width: 100%; height: 48px; padding: 0 44px 0 14px; border: 1px solid var(--line); border-radius: 12px; outline: none; background: white; color: var(--ink); font-size: 13px; }
+    .search-input:focus, .select-input:focus { border-color: #86b5a1; box-shadow: 0 0 0 3px rgba(36,116,93,.08); }
+    .select-input { height: 48px; min-width: 145px; padding: 0 12px; border: 1px solid var(--line); border-radius: 12px; outline: none; background: white; color: #5e7066; font-size: 13px; }
+    .category-tabs { display: flex; gap: 8px; margin-bottom: 22px; overflow-x: auto; scrollbar-width: none; }
+    .category-tabs::-webkit-scrollbar { display: none; }
+    .category-tab { flex: 0 0 auto; padding: 9px 15px; border: 1px solid var(--line); border-radius: 99px; color: #697a71; background: transparent; font-size: 12px; transition: .18s; }
+    .category-tab:hover, .category-tab.active { border-color: var(--green); color: white; background: var(--green); }
+    .items-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .item-card { overflow: hidden; border: 1px solid var(--line); border-radius: 17px; background: white; transition: .2s; }
+    .item-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .item-image { position: relative; height: 190px; display: grid; place-items: center; overflow: hidden; }
+    .item-image::before, .item-image::after { content: ""; position: absolute; border-radius: 50%; border: 1px solid rgba(25,55,47,.06); }
+    .item-image::before { width: 155px; height: 155px; }
+    .item-image::after { width: 205px; height: 205px; }
+    .item-image svg { position: relative; z-index: 1; width: 105px; height: 105px; filter: drop-shadow(0 10px 9px rgba(32,53,42,.13)); transition: .25s; }
+    .item-card:hover .item-image svg { transform: scale(1.06) rotate(-3deg); }
+    .item-image.backpack { background: #e9eee0; }
+    .item-image.keys { background: #f4eadb; }
+    .item-image.bottle { background: #e3edf0; }
+    .item-image.book { background: #f0e5e2; }
+    .item-image.watch { background: #e7e9f1; }
+    .item-image.case { background: #f2eddc; }
+    .status { position: absolute; z-index: 2; top: 13px; right: 13px; padding: 6px 10px; border-radius: 99px; color: #21694f; background: rgba(255,255,255,.9); font-size: 10px; font-weight: 600; }
+    .status.missing { color: #a96234; }
+    .item-body { padding: 15px 16px 14px; }
+    .item-topline { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .item-title { margin: 0; font-size: 15px; font-weight: 700; }
+    .item-category { color: #859087; font-size: 10px; }
+    .item-description { min-height: 38px; margin: 8px 0 12px; color: #75837a; font-size: 11px; line-height: 1.7; }
+    .contact-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 9px; padding: 7px 10px; border-radius: 8px; color: var(--green); background: #edf4ec; direction: ltr; font-family: "DM Sans", sans-serif; font-size: 11px; font-weight: 700; }
+    .contact-link:hover { color: white; background: var(--green); }
+    .item-meta { display: flex; align-items: center; justify-content: space-between; padding-top: 11px; border-top: 1px solid #f0f2ed; color: #859087; font-size: 10px; }
+    .item-location { display: inline-flex; align-items: center; gap: 4px; }
+    .item-location svg { width: 13px; height: 13px; }
+    .claim-button { padding: 6px 10px; border: 0; border-radius: 8px; color: var(--green); background: #edf4ec; font-size: 10px; font-weight: 600; }
+    .claim-button:hover { color: white; background: var(--green); }
+    .item-actions { display: flex; align-items: center; gap: 6px; }
+    .delete-button { padding: 6px 10px; border: 0; border-radius: 8px; color: #a34e46; background: #fbefed; font-size: 10px; font-weight: 600; }
+    .delete-button:hover { color: white; background: #a34e46; }
+    .empty-state { display: none; padding: 38px 15px; border: 1px dashed #d9e1d8; border-radius: 15px; color: var(--muted); text-align: center; font-size: 13px; }
+
+    .how-section { padding: 54px 0; background: #eef2e9; }
+    .how-heading { margin-bottom: 28px; text-align: center; }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .step { position: relative; padding: 22px; border: 1px solid rgba(25,55,47,.07); border-radius: 15px; background: rgba(255,255,255,.7); }
+    .step-number { width: 32px; height: 32px; display: grid; place-items: center; margin-bottom: 14px; border-radius: 10px; color: var(--green); background: #e2ecd8; font-family: "DM Sans",sans-serif; font-size: 13px; font-weight: 700; }
+    .step h3 { margin: 0 0 6px; font-size: 15px; }
+    .step p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.8; }
+
+    footer { padding: 26px 0; border-top: 1px solid var(--line); color: #859087; font-size: 11px; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+    .footer-brand { display: flex; align-items: center; gap: 8px; color: var(--ink); font-size: 14px; font-weight: 700; }
+    .footer-brand .brand-mark { width: 28px; height: 28px; border-radius: 9px; }
+    .footer-brand svg { width: 17px; }
+    .footer-contact { display: grid; gap: 3px; color: #71827a; }
+    .footer-contact a { color: var(--green); font-family: "DM Sans", sans-serif; font-weight: 700; direction: ltr; }
+    .footer-contact a:hover { text-decoration: underline; }
+    .security-note { margin-top: 12px; color: #8b918a; text-align: center; font-size: 10px; line-height: 1.7; }
+
+    .modal-backdrop { position: fixed; z-index: 10; inset: 0; display: none; place-items: center; padding: 20px; background: rgba(20,38,31,.48); backdrop-filter: blur(4px); }
+    .modal-backdrop.open { display: grid; }
+    .modal { width: min(500px,100%); max-height: min(90vh,760px); overflow-y: auto; padding: 25px; border-radius: 20px; background: white; box-shadow: 0 25px 80px rgba(0,0,0,.2); animation: appear .18s ease-out; }
+    @keyframes appear { from { opacity: 0; transform: translateY(10px) scale(.99); } to { opacity: 1; transform: none; } }
+    .modal-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 18px; }
+    .modal-header h2 { font-size: 22px; }
+    .modal-header p { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+    .close-button { width: 34px; height: 34px; border: 0; border-radius: 10px; color: #6f7e75; background: #f2f4f0; font-size: 20px; line-height: 1; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+    .field { display: grid; gap: 6px; }
+    .field[hidden] { display: none; }
+    .field.full { grid-column: 1/-1; }
+    .field label { color: #50645a; font-size: 11px; font-weight: 600; }
+    .field input, .field select, .field textarea { width: 100%; min-height: 42px; padding: 10px 11px; border: 1px solid #e3e9e1; border-radius: 10px; outline: none; background: #fbfcfa; color: var(--ink); font-size: 12px; }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: #86b5a1; box-shadow: 0 0 0 3px rgba(36,116,93,.08); }
+    .field textarea { min-height: 75px; resize: vertical; }
+    .form-hint { margin: 13px 0; padding: 10px 12px; border-radius: 10px; color: #738076; background: #f3f6ef; font-size: 10px; line-height: 1.7; }
+    .modal-submit { width: 100%; margin-top: 2px; }
+    .toast { position: fixed; z-index: 20; bottom: 22px; left: 50%; display: none; max-width: calc(100% - 30px); padding: 12px 18px; border-radius: 12px; color: white; background: #234e3f; box-shadow: var(--shadow); font-size: 13px; transform: translateX(-50%); }
+    .toast.show { display: block; animation: appear .2s ease-out; }
+
+    @media (max-width: 860px) {
+      .hero-grid { gap: 25px; }
+      .hero { padding-top: 55px; }
+      .hero-art { min-height: 315px; }
+      .art-blob { width: 280px; height: 260px; }
+      .items-grid { grid-template-columns: repeat(2, 1fr); }
+      .nav-links { gap: 17px; }
+    }
+    @media (max-width: 620px) {
+      .container { width: min(100% - 32px, 480px); }
+      .topbar { height: 66px; }
+      .nav-links, .school-pill { display: none; }
+      .nav-actions .button { min-height: 39px; padding: 0 12px; font-size: 12px; }
+      .brand { font-size: 19px; }
+      .brand-mark { width: 34px; height: 34px; }
+      .hero { padding: 46px 0 36px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 10px; }
+      h1 { font-size: 43px; letter-spacing: -1.5px; }
+      .hero-copy { margin: 14px 0 20px; font-size: 14px; }
+      .hero-art { min-height: 300px; }
+      .note-one { right: 2px; }
+      .note-two { left: 0; }
+      .stats { margin-bottom: 52px; }
+      .stat { flex-direction: column; gap: 7px; padding: 13px 5px; text-align: center; }
+      .stat-icon { width: 32px; height: 32px; }
+      .stat strong { font-size: 16px; }
+      .stat span { font-size: 9px; }
+      .section { padding-bottom: 58px; }
+      .section-heading { align-items: start; }
+      h2 { font-size: 23px; }
+      .section-heading > .button { display: none; }
+      .toolbar { flex-wrap: wrap; }
+      .search-wrap { flex-basis: 100%; }
+      .select-input { flex: 1; min-width: 0; }
+      .items-grid { grid-template-columns: 1fr; gap: 13px; }
+      .item-card { display: grid; grid-template-columns: 38% 1fr; }
+      .item-image { height: 100%; min-height: 190px; }
+      .item-image svg { width: 82px; height: 82px; }
+      .item-body { padding: 13px; }
+      .item-description { min-height: 0; }
+      .steps { grid-template-columns: 1fr; }
+      .how-section { padding: 44px 0; }
+      .footer-inner { flex-direction: column; }
+      .form-grid { grid-template-columns: 1fr; }
+      .field.full { grid-column: auto; }
+      .modal { padding: 20px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="container nav" aria-label="التنقل الرئيسي">
+      <a class="brand" href="#" aria-label="لُقطة - الرئيسية">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 3.5 19 6v5.5c0 4.4-2.8 7.6-7 9-4.2-1.4-7-4.6-7-9V6l7-2.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        لُقطة
+      </a>
+      <div class="nav-links">
+        <a href="#items">المعروضات</a>
+        <a href="#how">كيف تعمل المنصة؟</a>
+      </div>
+      <div class="nav-actions">
+        <span class="school-pill"><span></span>مدرسة السادات الثانويه بنين</span>
+        <button class="button button-primary open-report" type="button"><span>＋</span> أبلغ عن غرض</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5 19 6v5.5c0 4.4-2.8 7.6-7 9-4.2-1.4-7-4.6-7-9V6l7-2.5Z" stroke="currentColor" stroke-width="1.7"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            مجتمع مدرسي أكثر تعاونًا
+          </div>
+          <h1>كل غرض له <em>صاحبه.</em><br>خلّينا نوصّله له.</h1>
+          <p class="hero-copy">ضاعت منك حاجة في المدرسة؟ أو لقيت غرض مش بتاعك؟ هنا هتلاقي طريقة سهلة وآمنة عشان كل حاجة ترجع لصاحبها.</p>
+          <div class="hero-buttons">
+            <button class="button button-primary open-report" type="button">أبلغ عن غرض مفقود <span>←</span></button>
+            <a class="button button-light" href="#items">تصفّح المعروضات</a>
+          </div>
+          <div class="hero-note">
+            <div class="avatar-stack" aria-hidden="true"><span>م</span><span>س</span><span>ل</span></div>
+            <span>زملاؤك بيساعدوا بعض كل يوم</span>
+          </div>
+        </div>
+        <div class="hero-art" aria-label="رسم توضيحي لحقيبة مدرسية">
+          <div class="art-blob"></div>
+          <span class="sparkle sparkle-one">✳</span><span class="sparkle sparkle-two">✦</span>
+          <div class="float-note note-one"><span class="float-icon">✨</span><span><strong>بلاغك يوصل بسرعة</strong><small>أضف تفاصيل الغرض المفقود أو المعثور عليه</small></span></div>
+          <article class="lost-card">
+            <div class="lost-card-top"><span>شارك في إعادة الأغراض</span><span class="mini-tag">خطوة سهلة</span></div>
+            <div class="bag-illustration">
+              <svg viewBox="0 0 120 140" fill="none" aria-hidden="true"><path d="M37 34V25c0-13 10-21 23-21s23 8 23 21v9" stroke="#657448" stroke-width="8" stroke-linecap="round"/><path d="M23 36c0-7 6-13 13-13h48c7 0 13 6 13 13l7 82c1 9-6 16-15 16H31c-9 0-16-7-15-16l7-82Z" fill="#8B9B62"/><path d="M26 41c0-4 4-8 8-8h52c4 0 8 4 8 8l5 68c1 6-4 11-10 11H31c-6 0-11-5-10-11l5-68Z" fill="#A7B681"/><path d="M39 63c0-5 4-9 9-9h26c5 0 9 4 9 9v24c0 5-4 9-9 9H48c-5 0-9-4-9-9V63Z" fill="#71804F"/><path d="M45 68h32" stroke="#C9D3AA" stroke-width="3" stroke-linecap="round"/><path d="M39 118v8M81 118v8" stroke="#596745" stroke-width="6" stroke-linecap="round"/></svg>
+            </div>
+            <h3>أضف بلاغك</h3>
+            <p>اكتب وصف الغرض ومكانه، وابعث البلاغ على واتساب.</p>
+          </article>
+          <div class="float-note note-two"><span class="float-icon">🤝</span><span><strong>بأمان وخصوصية</strong><small>التواصل عن طريق إدارة المدرسة</small></span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <section class="section" id="items">
+        <div class="section-heading">
+          <div><p class="section-kicker">بلاغات الطلاب</p><h2>المفقودات والمعثورات</h2><p class="section-subtitle">القائمة تبدأ فارغة. أضف بلاغك؛ سيظهر على هذا الجهاز ويُرسل للإدارة عبر واتساب.</p></div>
+          <button class="button button-primary open-report" type="button">＋ أضف بلاغ جديد</button>
+        </div>
+        <div class="toolbar">
+          <label class="search-wrap">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <input class="search-input" id="search" type="search" placeholder="ابحث عن غرض، لون، أو مكان..." aria-label="ابحث عن غرض">
+          </label>
+          <select class="select-input" id="sort" aria-label="ترتيب المعروضات">
+            <option value="newest">الأحدث أولًا</option>
+            <option value="oldest">الأقدم أولًا</option>
+          </select>
+        </div>
+        <div class="category-tabs" role="group" aria-label="تصفية حسب نوع الغرض">
+          <button class="category-tab active" type="button" data-filter="الكل">الكل</button>
+          <button class="category-tab" type="button" data-filter="شنط">شنط</button>
+          <button class="category-tab" type="button" data-filter="أدوات مدرسية">أدوات مدرسية</button>
+          <button class="category-tab" type="button" data-filter="إلكترونيات">إلكترونيات</button>
+          <button class="category-tab" type="button" data-filter="أغراض شخصية">أغراض شخصية</button>
+          <button class="category-tab" type="button" data-filter="أخرى">أخرى</button>
+        </div>
+        <div class="items-grid" id="items-grid">
+        </div>
+        <div class="empty-state" id="empty-state">لسه مفيش بلاغات. اضغط «أضف بلاغ جديد» لو فقدت غرضًا أو عثرت على غرض.</div>
+      </section>
+    </div>
+
+    <section class="how-section" id="how">
+      <div class="container">
+        <div class="how-heading"><p class="section-kicker">خطوات بسيطة</p><h2>الموضوع أسهل مما تتخيل</h2><p class="section-subtitle">من أول البلاغ لحد ما غرضك يرجع لك.</p></div>
+        <div class="steps">
+          <article class="step"><span class="step-number">١</span><h3>دوّر أو أضف بلاغ</h3><p>ابحث في المعروضات، أو اكتب بلاغ جديد ووصف فيه الغرض ومكانه.</p></article>
+          <article class="step"><span class="step-number">٢</span><h3>إدارة المدرسة تراجع</h3><p>مسؤول المفقودات يتأكد من التفاصيل ويحافظ على خصوصية أصحاب الأغراض.</p></article>
+          <article class="step"><span class="step-number">٣</span><h3>استلم غرضك بأمان</h3><p>تواصل مع الأستاذ طه العزب عبر واتساب، ثم استلم الغرض بعد التأكد إنه يخصك.</p></article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <a class="footer-brand" href="#"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3.5 19 6v5.5c0 4.4-2.8 7.6-7 9-4.2-1.4-7-4.6-7-9V6l7-2.5Z" stroke="currentColor" stroke-width="1.8"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>لُقطة</a>
+      <span>مع بعض، نخلي كل حاجة ترجع لصاحبها 💚</span>
+      <span class="footer-contact"><span>بلاغات المفقودات · طه العزب</span><a href="https://wa.me/201034546880" target="_blank" rel="noopener noreferrer" dir="ltr" aria-label="راسل طه العزب على واتساب: 01034546880">واتساب: +20 103 454 6880</a></span>
+    </div>
+    <div class="container security-note">صاحب البلاغ يحذفه بإدخال اسمه وكلمة المرور التي اختارها. بيانات البلاغ محفوظة على هذا الجهاز فقط؛ الحماية المحلية لا تستبدل خادمًا آمنًا.</div>
+  </footer>
+
+  <div class="modal-backdrop" id="report-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal">
+      <div class="modal-header">
+        <div><h2 id="modal-title">أبلغ عن غرض</h2><p>املأ البيانات دي عشان نساعدك بسرعة.</p></div>
+        <button class="close-button" type="button" aria-label="إغلاق">×</button>
+      </div>
+      <form id="report-form">
+        <div class="form-grid">
+          <div class="field"><label for="report-type">نوع البلاغ</label><select id="report-type" required><option value="مفقود">غرض مفقود</option><option value="معثور عليه">غرض عثرت عليه</option></select></div>
+          <div class="field"><label for="report-category">التصنيف</label><select id="report-category" required><option value="">اختر التصنيف</option><option>شنط</option><option>أدوات مدرسية</option><option>إلكترونيات</option><option>أغراض شخصية</option><option>أخرى</option></select></div>
+          <div class="field full"><label for="report-name">اسم الغرض</label><input id="report-name" required maxlength="60" placeholder="مثال: زجاجة مياه زرقاء"></div>
+          <div class="field"><label for="report-location">المكان</label><input id="report-location" required maxlength="50" placeholder="مثال: الدور الأول"></div>
+          <div class="field"><label for="report-date">التاريخ</label><input id="report-date" type="date" required></div>
+          <div class="field full"><label for="report-description">وصف يساعدنا نميّزه</label><textarea id="report-description" required maxlength="240" placeholder="اللون، العلامة المميزة، أو أي تفاصيل..."></textarea></div>
+          <div class="field"><label for="report-student">اسم الطالب/ة (مطلوب)</label><input id="report-student" required maxlength="50" placeholder="اكتب اسمك الكامل"></div>
+          <div class="field"><label for="report-class">الفصل (مطلوب)</label><input id="report-class" required maxlength="20" placeholder="مثال: ٢/ب"></div>
+          <div class="field full" id="report-contact-field" hidden><label for="report-contact">رقم تواصل الشخص اللي عثر على الغرض (هيظهر للطلاب)</label><input id="report-contact" type="tel" inputmode="tel" autocomplete="tel" maxlength="24" placeholder="مثال: 01012345678"></div>
+          <div class="field"><label for="report-owner-password">كلمة مرور لحذف بلاغك (مطلوب)</label><input id="report-owner-password" type="password" required minlength="6" maxlength="100" autocomplete="new-password" placeholder="٦ أحرف على الأقل"></div>
+          <div class="field"><label for="report-owner-password-confirm">تأكيد كلمة المرور</label><input id="report-owner-password-confirm" type="password" required minlength="6" maxlength="100" autocomplete="new-password" placeholder="اكتبها مرة أخرى"></div>
+        </div>
+        <div class="form-hint">اختر كلمة مرور خاصة ببلاغك واحفظها؛ ستحتاج اسمك وكلمة المرور لحذف البلاغ. كلمة المرور لا تُرسل عبر واتساب.</div>
+        <div class="form-hint">البلاغات تُحفظ على هذا الجهاز فقط، ولا تُرسل تلقائيًا عبر واتساب.</div>
+        <button class="button button-primary modal-submit" type="submit">إضافة البلاغ</button>
+      </form>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const modal = document.getElementById("report-modal");
+    const reportForm = document.getElementById("report-form");
+    const toast = document.getElementById("toast");
+    const grid = document.getElementById("items-grid");
+    const searchInput = document.getElementById("search");
+    const sortSelect = document.getElementById("sort");
+    const emptyState = document.getElementById("empty-state");
+    let activeCategory = "الكل";
+    let toastTimer;
+    const whatsappNumber = "201034546880";
+    const reportsStorageKey = "luqta-school-reports";
+    const passwordIterations = 120000;
+    localStorage.removeItem("luqta-delete-password");
+    const ownerPasswordField = document.getElementById("report-owner-password");
+    const ownerPasswordConfirmField = document.getElementById("report-owner-password-confirm");
+    const reportTypeField = document.getElementById("report-type");
+    const reportContactField = document.getElementById("report-contact-field");
+    const reportContactInput = document.getElementById("report-contact");
+    const validateOwnerPasswordConfirmation = () => {
+      ownerPasswordConfirmField.setCustomValidity(
+        ownerPasswordConfirmField.value === ownerPasswordField.value ? "" : "كلمتا المرور غير متطابقتين."
+      );
+    };
+    ownerPasswordField.addEventListener("input", validateOwnerPasswordConfirmation);
+    ownerPasswordConfirmField.addEventListener("input", validateOwnerPasswordConfirmation);
+
+    function updateContactField() {
+      const found = reportTypeField.value === "معثور عليه";
+      reportContactField.hidden = !found;
+      reportContactInput.required = found;
+      reportContactInput.setCustomValidity("");
+    }
+
+    function normalizePhoneNumber(value) {
+      const westernDigits = value
+        .replace(/[٠-٩]/g, digit => String("٠١٢٣٤٥٦٧٨٩".indexOf(digit)))
+        .replace(/[۰-۹]/g, digit => String("۰۱۲۳۴۵۶۷۸۹".indexOf(digit)));
+      const compact = westernDigits.replace(/[\s().-]/g, "");
+      const international = compact.startsWith("00") ? `+${compact.slice(2)}` : compact;
+      if (!/^\+?\d{10,15}$/.test(international)) return "";
+      return international.startsWith("+") ? international : `+${international}`;
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(() => toast.classList.remove("show"), 3600);
+    }
+
+    function openModal() {
+      modal.classList.add("open");
+      document.body.style.overflow = "hidden";
+      modal.querySelector("#report-type").focus();
+    }
+
+    function closeModal() {
+      modal.classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    function openWhatsApp(message) {
+      const link = document.createElement("a");
+      link.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    }
+
+    function filterItems() {
+      const query = searchInput.value.trim().toLocaleLowerCase("ar");
+      const cards = [...grid.querySelectorAll(".item-card")];
+      let visibleCount = 0;
+      cards.forEach(card => {
+        const categoryMatches = activeCategory === "الكل" || card.dataset.category === activeCategory;
+        const searchMatches = !query || `${card.dataset.search} ${card.textContent}`.toLocaleLowerCase("ar").includes(query);
+        const visible = categoryMatches && searchMatches;
+        card.hidden = !visible;
+        if (visible) visibleCount++;
+      });
+      emptyState.textContent = cards.length
+        ? "مفيش أغراض مطابقة للبحث. جرّب كلمة تانية أو اختار تصنيف مختلف."
+        : "لسه مفيش بلاغات. اضغط «أضف بلاغ جديد» لو فقدت غرضًا أو عثرت على غرض.";
+      emptyState.style.display = visibleCount ? "none" : "block";
+    }
+
+    function createReportCard(report) {
+      const isFound = report.type === "معثور عليه";
+      const visualClass = {
+        "شنط": "backpack",
+        "أدوات مدرسية": "book",
+        "إلكترونيات": "watch",
+        "أغراض شخصية": "case",
+        "أخرى": "case"
+      }[report.category] || "case";
+      const card = document.createElement("article");
+      card.className = "item-card";
+      card.dataset.category = report.category;
+      card.dataset.status = isFound ? "found" : "missing";
+      card.dataset.age = String(report.createdAt);
+      card.dataset.search = `${report.category} ${report.name} ${report.location} ${report.description}`.toLocaleLowerCase("ar");
+      card.innerHTML = `<div class="item-image ${visualClass}"><span class="status"></span><span aria-hidden="true" style="font-size:54px;position:relative;z-index:1">${isFound ? "📦" : "🔎"}</span></div><div class="item-body"><div class="item-topline"><h3 class="item-title"></h3><span class="item-category"></span></div><p class="item-description"></p><div class="item-meta"><span class="item-location"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s7-4.4 7-11a7 7 0 1 0-14 0c0 6.6 7 11 7 11Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2" stroke="currentColor" stroke-width="1.8"/></svg></span><div class="item-actions"><button class="claim-button" type="button"></button><button class="delete-button" type="button" aria-label="حذف البلاغ">حذف</button></div></div></div>`;
+      card.querySelector(".status").textContent = isFound ? "تم العثور عليه" : "مفقود";
+      card.querySelector(".status").classList.toggle("missing", !isFound);
+      card.querySelector(".item-title").textContent = report.name;
+      card.querySelector(".item-category").textContent = report.category;
+      card.querySelector(".item-description").textContent = report.description;
+      const reportDate = new Date(report.createdAt);
+      const dateLabel = Number.isNaN(reportDate.getTime())
+        ? report.date
+        : reportDate.toLocaleDateString("ar-EG");
+      card.querySelector(".item-location").append(document.createTextNode(`${report.location} · ${dateLabel}`));
+      const claimButton = card.querySelector(".claim-button");
+      claimButton.textContent = isFound ? "دي بتاعتي" : "لقيتها";
+      claimButton.dataset.item = report.name;
+      if (isFound && report.contactPhone) {
+        const contactLink = document.createElement("a");
+        contactLink.className = "contact-link";
+        contactLink.href = `tel:${report.contactPhone}`;
+        contactLink.textContent = `اتصل بصاحب البلاغ: ${report.contactPhone}`;
+        contactLink.setAttribute("aria-label", `اتصل بالشخص الذي عثر على الغرض على ${report.contactPhone}`);
+        card.querySelector(".item-description").after(contactLink);
+      }
+      claimButton.addEventListener("click", () => {
+        const student = prompt("اكتب اسمك الكامل:");
+        if (!student || !student.trim()) return;
+        const studentClass = prompt("اكتب فصلك:");
+        if (!studentClass || !studentClass.trim()) return;
+        openWhatsApp(`مرحبًا أستاذ طه العزب، ${student.trim()} من فصل ${studentClass.trim()} يستفسر عن الغرض: ${report.name}.`);
+        showToast("فتحنا واتساب برسالة جاهزة. اضغط إرسال لإتمام التواصل.");
+      });
+      card.querySelector(".delete-button").addEventListener("click", async () => {
+        try {
+          if (!report.ownerCredential || typeof report.ownerCredential.salt !== "string" ||
+              typeof report.ownerCredential.hash !== "string") {
+            showToast("هذا بلاغ قديم لا يحتوي على كلمة مرور شخصية؛ تواصل مع المسؤول لحذفه.");
+            return;
+          }
+
+          const student = prompt("اكتب الاسم الذي سجلت به البلاغ:");
+          if (student === null) return;
+          if (student.trim().toLocaleLowerCase("ar") !== report.student.trim().toLocaleLowerCase("ar")) {
+            showToast("الاسم غير مطابق لصاحب البلاغ.");
+            return;
+          }
+          const password = prompt("اكتب كلمة المرور التي اخترتها لهذا البلاغ:");
+          if (password === null) return;
+          const passwordHash = await hashOwnerPassword(password, report.ownerCredential.salt, report.ownerCredential.iterations);
+          if (passwordHash !== report.ownerCredential.hash) {
+            showToast("كلمة المرور غير صحيحة؛ لم يتم حذف البلاغ.");
+            return;
+          }
+          if (!confirm(`هل تريد حذف بلاغك «${report.name}» نهائيًا من هذا الجهاز؟`)) return;
+
+          const savedReports = JSON.parse(localStorage.getItem(reportsStorageKey) || "[]");
+          if (!Array.isArray(savedReports)) throw new Error("Saved reports must be an array.");
+          const remainingReports = savedReports.filter(savedReport => savedReport.id !== report.id);
+          if (remainingReports.length === savedReports.length) {
+            throw new Error("The report was not found in local storage.");
+          }
+          localStorage.setItem(reportsStorageKey, JSON.stringify(remainingReports));
+          card.remove();
+          filterItems();
+          showToast("تم حذف بلاغك من هذا الجهاز.");
+        } catch (error) {
+          console.error("تعذر حذف البلاغ:", error);
+          showToast("تعذر حذف البلاغ. حاول مرة أخرى.");
+        }
+      });
+      return card;
+    }
+
+    async function hashOwnerPassword(password, saltHex, iterations = passwordIterations) {
+      if (!crypto.subtle) throw new Error("Secure password hashing is unavailable in this browser.");
+      const salt = Uint8Array.from(saltHex.match(/.{2}/g) || [], byte => parseInt(byte, 16));
+      if (salt.length !== 16 || !Number.isInteger(iterations) || iterations < 100000) {
+        throw new Error("Invalid saved password parameters.");
+      }
+      const keyMaterial = await crypto.subtle.importKey(
+        "raw",
+        new TextEncoder().encode(password),
+        "PBKDF2",
+        false,
+        ["deriveBits"]
+      );
+      const derivedBits = await crypto.subtle.deriveBits(
+        { name: "PBKDF2", salt, iterations, hash: "SHA-256" },
+        keyMaterial,
+        256
+      );
+      return [...new Uint8Array(derivedBits)].map(byte => byte.toString(16).padStart(2, "0")).join("");
+    }
+
+    function loadSavedReports() {
+      try {
+        const savedReports = JSON.parse(localStorage.getItem(reportsStorageKey) || "[]");
+        if (!Array.isArray(savedReports)) throw new Error("Saved reports must be an array.");
+        savedReports.forEach((report, index) => {
+          if (!report || typeof report.name !== "string" || typeof report.category !== "string" ||
+              typeof report.location !== "string" || typeof report.description !== "string" ||
+              typeof report.date !== "string" || !Number.isFinite(report.createdAt) ||
+              !["مفقود", "معثور عليه"].includes(report.type)) {
+            throw new Error("A saved report has invalid data.");
+          }
+          if (typeof report.id !== "string" || !report.id) {
+            report.id = `${report.createdAt}-${index}`;
+          }
+          grid.appendChild(createReportCard(report));
+        });
+        localStorage.setItem(reportsStorageKey, JSON.stringify(savedReports));
+      } catch (error) {
+        console.error("تعذر تحميل البلاغات المحفوظة:", error);
+        showToast("تعذر تحميل بعض البلاغات المحفوظة على هذا الجهاز.");
+      }
+    }
+
+    function saveReport(report) {
+      try {
+        const savedReports = JSON.parse(localStorage.getItem(reportsStorageKey) || "[]");
+        if (!Array.isArray(savedReports)) throw new Error("Saved reports must be an array.");
+        savedReports.push(report);
+        localStorage.setItem(reportsStorageKey, JSON.stringify(savedReports));
+        return true;
+      } catch (error) {
+        console.error("تعذر حفظ البلاغ على هذا الجهاز:", error);
+        return false;
+      }
+    }
+
+    document.querySelectorAll(".open-report").forEach(button => button.addEventListener("click", openModal));
+    modal.querySelector(".close-button").addEventListener("click", closeModal);
+    modal.addEventListener("click", event => {
+      if (event.target === modal) closeModal();
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && modal.classList.contains("open")) closeModal();
+    });
+
+    document.querySelectorAll(".category-tab").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelector(".category-tab.active").classList.remove("active");
+        button.classList.add("active");
+        activeCategory = button.dataset.filter;
+        filterItems();
+      });
+    });
+    searchInput.addEventListener("input", filterItems);
+    reportTypeField.addEventListener("change", updateContactField);
+    updateContactField();
+    function sortItems() {
+      [...grid.querySelectorAll(".item-card")]
+        .sort((a, b) => sortSelect.value === "newest" ? Number(b.dataset.age) - Number(a.dataset.age) : Number(a.dataset.age) - Number(b.dataset.age))
+        .forEach(card => grid.appendChild(card));
+    }
+    sortSelect.addEventListener("change", sortItems);
+
+    document.querySelectorAll(".claim-button").forEach(button => {
+      button.addEventListener("click", () => {
+        let saw = prompt("اسمك:")
+        let sa= prompt("الفصل:")
+        openWhatsApp(`مرحبًا أستاذ طه العزب، أود الاستفسار عن الغرض: ${button.dataset.item}.  الاسم:${saw} الفصل: ${sa}`);
+        showToast("فتحنا واتساب برسالة جاهزة. اضغط إرسال لإتمام التواصل.");
+      });
+    });
+
+    reportForm.addEventListener("submit", async event => {
+      event.preventDefault();
+      const studentField = document.getElementById("report-student");
+      const classField = document.getElementById("report-class");
+      const student = studentField.value.trim();
+      const studentClass = classField.value.trim();
+      const ownerPassword = ownerPasswordField.value;
+      studentField.setCustomValidity(student ? "" : "من فضلك اكتب اسمك الكامل.");
+      classField.setCustomValidity(studentClass ? "" : "من فضلك اكتب فصلك.");
+      validateOwnerPasswordConfirmation();
+      if (!reportForm.reportValidity()) return;
+      const type = document.getElementById("report-type").value;
+      const category = document.getElementById("report-category").value;
+      const name = document.getElementById("report-name").value.trim();
+      const location = document.getElementById("report-location").value.trim();
+      const date = document.getElementById("report-date").value;
+      const description = document.getElementById("report-description").value.trim();
+      let contactPhone = "";
+      if (type === "معثور عليه") {
+        contactPhone = normalizePhoneNumber(reportContactInput.value);
+        reportContactInput.setCustomValidity(contactPhone ? "" : "اكتب رقم تواصل صحيحًا من ١٠ إلى ١٥ رقمًا.");
+        if (!reportForm.reportValidity()) return;
+      }
+      try {
+        const salt = crypto.getRandomValues(new Uint8Array(16));
+        const saltHex = [...salt].map(byte => byte.toString(16).padStart(2, "0")).join("");
+        const passwordHash = await hashOwnerPassword(ownerPassword, saltHex);
+        const report = {
+          id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+          type, category, name, location, date, description, student, studentClass, contactPhone,
+          ownerCredential: { salt: saltHex, hash: passwordHash, iterations: passwordIterations },
+          createdAt: Date.now()
+        };
+        const saved = saveReport(report);
+        if (!saved) {
+          showToast("تعذر حفظ البلاغ على هذا الجهاز؛ لم يتم إرساله.");
+          return;
+        }
+        grid.prepend(createReportCard(report));
+        sortItems();
+        reportForm.reset();
+        const today = new Date();
+        document.getElementById("report-date").value = new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+        closeModal();
+        filterItems();
+        showToast("تمت إضافة البلاغ وحفظه على هذا الجهاز فقط.");
+      } catch (error) {
+        console.error("تعذر إعداد كلمة مرور البلاغ:", error);
+        showToast("تعذر تأمين كلمة المرور في هذا المتصفح. لم يتم إرسال البلاغ.");
+      }
+    });
+
+    const today = new Date();
+    document.getElementById("report-date").value = new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+    loadSavedReports();
+    sortItems();
+    filterItems();
+  </script>
+</body>
+</html>
