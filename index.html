@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#f6f7f2">
   <meta name="description" content="منصة مدرستي للمفقودات: أبلغ عن غرض مفقود أو ساعد زميلك في العثور على ما فقده.">
-  <title>مفقوداتي هتهالي</title>
+  <title>مفقودك أمانة… وعودته مسؤوليتنا</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap');
 
@@ -56,8 +56,10 @@
     .eyebrow { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 18px; padding: 7px 12px; border: 1px solid #dfe9d9; border-radius: 99px; color: var(--green); background: #eef4e9; font-size: 12px; font-weight: 600; }
     .eyebrow svg { width: 15px; height: 15px; }
     h1 { max-width: 580px; margin: 0; font-size: clamp(38px, 5vw, 62px); line-height: 1.22; letter-spacing: -2px; }
-    h1 em { position: relative; z-index: 0; font-style: normal; white-space: nowrap; }
+    h1 em { position: relative; z-index: 0; font-style: normal; }
     h1 em::after { content: ""; position: absolute; z-index: -1; right: -4px; left: -4px; bottom: 5px; height: 15px; border-radius: 8px; background: var(--lime); }
+    .hero-school-title { margin-top: 10px; font-size: clamp(1.4rem, 3.5vw, 2.5rem); line-height: 1.45; letter-spacing: -.5px; }
+    .hero-school-title em::after { height: 8px; bottom: 2px; }
     .hero-copy { max-width: 470px; margin: 18px 0 26px; color: var(--muted); font-size: 16px; line-height: 1.9; }
     .hero-buttons { display: flex; align-items: center; gap: 12px; }
     .button { min-height: 46px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 0 18px; border: 0; border-radius: 12px; font-weight: 600; font-size: 14px; transition: transform .18s ease, background .18s ease, box-shadow .18s ease; }
@@ -131,7 +133,8 @@
     .item-image.watch { background: #e7e9f1; }
     .item-image.case { background: #f2eddc; }
     .item-photo { position: relative; z-index: 1; width: min(78%, 190px); height: 150px; object-fit: contain; filter: drop-shadow(0 10px 9px rgba(32,53,42,.13)); }
-    .status { position: absolute; z-index: 2; top: 13px; right: 13px; padding: 6px 10px; border-radius: 99px; color: #21694f; background: rgba(255,255,255,.9); font-size: 10px; font-weight: 600; }
+    .status { position: absolute; z-index: 2; top: 13px; right: 13px; padding: 6px 10px; border: 0; border-radius: 99px; color: #21694f; background: rgba(255,255,255,.9); font-size: 10px; font-weight: 600; }
+    .status:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
     .status.missing { color: #a96234; }
     .status.delivered { color: #155e36; background: #dcfce7; }
     .item-body { padding: 17px 18px 16px; }
@@ -149,6 +152,8 @@
     .item-actions { display: flex; align-items: center; gap: 6px; }
     .delete-button { padding: 8px 10px; border: 0; border-radius: 9px; color: #a34e46; background: #fbefed; font-size: 10px; font-weight: 600; }
     .delete-button:hover { color: white; background: #a34e46; }
+    .restore-button { padding: 8px 10px; border: 0; border-radius: 9px; color: var(--green); background: #edf4ec; font-size: 10px; font-weight: 600; }
+    .restore-button:hover { color: white; background: var(--green); }
     .empty-state { display: none; padding: 46px 20px; border: 1px dashed #cbd9ce; border-radius: 18px; color: var(--muted); background: rgba(255,255,255,.55); text-align: center; font-size: 13px; line-height: 1.8; }
 
     .how-section { padding: 68px 0; border-top: 1px solid rgba(25,55,47,.04); background: linear-gradient(180deg, #eef3eb, #f2f5ef); }
@@ -206,7 +211,7 @@
     .toast { position: fixed; z-index: 20; bottom: 22px; left: 50%; display: none; max-width: calc(100% - 30px); padding: 12px 18px; border-radius: 12px; color: white; background: #234e3f; box-shadow: var(--shadow); font-size: 13px; transform: translateX(-50%); }
     .toast.show { display: block; animation: appear .2s ease-out; }
     :focus-visible { outline: 3px solid rgba(36,116,93,.38); outline-offset: 3px; }
-    .button:focus-visible, .category-tab:focus-visible, .claim-button:focus-visible, .delete-button:focus-visible, .close-button:focus-visible { outline-offset: 3px; }
+    .button:focus-visible, .category-tab:focus-visible, .claim-button:focus-visible, .delete-button:focus-visible, .restore-button:focus-visible, .close-button:focus-visible { outline-offset: 3px; }
 
     @media (max-width: 860px) {
       .hero-grid { gap: 25px; }
@@ -214,7 +219,9 @@
       .hero-art { min-height: 315px; }
       .art-blob { width: 280px; height: 260px; }
       .items-grid { grid-template-columns: repeat(2, 1fr); }
-      .nav-links { gap: 17px; }
+      .nav { gap: 12px; }
+      .nav-links { gap: 12px; font-size: 13px; }
+      .school-pill { display: none; }
     }
     @media (max-width: 620px) {
       .container { width: min(100% - 32px, 520px); }
@@ -225,7 +232,8 @@
       .brand-mark { width: 34px; height: 34px; }
       .hero { padding: 42px 0 34px; }
       .hero-grid { grid-template-columns: 1fr; gap: 10px; }
-      h1 { font-size: 43px; letter-spacing: -1.5px; }
+      h1 { font-size: clamp(32px, 8vw, 43px); letter-spacing: -1.5px; }
+      .hero-school-title { font-size: clamp(20px, 5vw, 28px); }
       .hero-copy { margin: 14px 0 20px; font-size: 14px; }
       .hero-art { min-height: 285px; }
       .lost-card { width: min(250px, 72vw); }
@@ -308,9 +316,11 @@
             مجتمع مدرسي أكثر تعاونًا
           </div>
           <h1>كل غرض له <em>صاحب.</em><br>خلّينا نوصّله.</h1>
-          <h1><em>تحت رعايه مدرسه السادات</em></h1>
-          <h1 style="font-size: 40px; padding-top: 10px;"><em>الثانويه بنين باداره السنبلاوين</em></h1>
-          <p class="hero-copy">ضاعت منك حاجة في المدرسة؟ أو لقيت غرض مش بتاعك؟ هنا هتلاقي طريقة سهلة وآمنة عشان كل حاجة ترجع لصاحبها.</p>
+          <h1 class="hero-school-title"><em>تحت رعايه مدرسه السادات</em></h1>
+          <h1 class="hero-school-title"><em>الثانويه بنين باداره السنبلاوين</em></h1>
+          <p class="hero-copy">منصة مجتمعية إلكترونية تتيح للطلاب الإبلاغ عن الأشياء المفقودة أو التي عُثر عليها، مثل</p>
+          <p class="hero-copy">الهواتف والمحافظ والبطاقات والمفاتيح والأوراق والمقتنيات الشخصية، مع تصنيف البلاغات</p>
+           <p class="hero-copy">حسب المكان والتاريخ ونوع المفقود.</p>
           <div class="hero-buttons">
             <button class="button button-primary open-report" type="button">أبلغ عن غرض مفقود <span>←</span></button>
             <a class="button button-light" href="#items">تصفّح المعروضات</a>
@@ -457,6 +467,28 @@
       </form>
     </div>
   </div>
+  <div class="modal-backdrop" id="status-edit-modal" role="dialog" aria-modal="true" aria-labelledby="status-edit-title">
+    <div class="modal">
+      <div class="modal-header">
+        <div><h2 id="status-edit-title">تعديل حالة البلاغ</h2><p id="status-edit-report-name"></p></div>
+        <button class="close-button" id="status-edit-close" type="button" aria-label="إغلاق">×</button>
+      </div>
+      <form id="status-edit-form">
+        <div class="field">
+          <label for="status-edit-type">حالة الغرض</label>
+          <select id="status-edit-type" required>
+            <option value="مفقود">مفقود</option>
+            <option value="معثور عليه">تم العثور عليه</option>
+          </select>
+        </div>
+        <div class="field" style="margin-top:12px">
+          <label for="status-edit-password">كلمة مرور المسؤول</label>
+          <input id="status-edit-password" type="password" autocomplete="current-password" required placeholder="أدخل كلمة مرور المسؤول">
+        </div>
+        <button class="button button-primary modal-submit" id="status-edit-submit" type="submit">حفظ الحالة</button>
+      </form>
+    </div>
+  </div>
   <div class="modal-backdrop" id="delete-modal" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title">
     <div class="modal">
       <div class="modal-header">
@@ -496,6 +528,10 @@
     const deliveredDeleteModal = document.getElementById("delivered-delete-modal");
     const deliveredDeleteForm = document.getElementById("delivered-delete-form");
     const deliveredDeletePassword = document.getElementById("delivered-delete-password");
+    const statusEditModal = document.getElementById("status-edit-modal");
+    const statusEditForm = document.getElementById("status-edit-form");
+    const statusEditType = document.getElementById("status-edit-type");
+    const statusEditPassword = document.getElementById("status-edit-password");
     const reportForm = document.getElementById("report-form");
     const toast = document.getElementById("toast");
     const grid = document.getElementById("items-grid");
@@ -512,6 +548,7 @@
     const adminPasswordHash = "a2f473db492dd1aab975efdeea3336c20318dccb3045fbaeebc48fd0d6bcb111";
     let pendingDelete = null;
     let pendingDeliveredDelete = null;
+    let pendingStatusEdit = null;
     const deleteOwnerName = document.getElementById("delete-owner-name");
     const deleteOwnerPassword = document.getElementById("delete-owner-password");
     const adminPasswordField = document.getElementById("admin-password");
@@ -627,6 +664,46 @@
       emptyState.style.display = visibleCount ? "none" : "block";
     }
 
+    function updateReportCardStatus(report, card) {
+      const isFound = report.type === "معثور عليه";
+      const delivered = Boolean(report.deliveredAt);
+      card.dataset.status = isFound ? "found" : "missing";
+      card.dataset.delivered = String(delivered);
+
+      const statusBadge = card.querySelector(".status");
+      statusBadge.textContent = delivered ? "✓ تم التسليم" : isFound ? "تم العثور عليه" : "مفقود";
+      statusBadge.setAttribute("aria-label", `حالة البلاغ: ${statusBadge.textContent}. اضغط لتعديلها للمسؤول`);
+      statusBadge.classList.toggle("missing", !isFound && !delivered);
+      statusBadge.classList.toggle("delivered", delivered);
+
+      const claimButton = card.querySelector(".claim-button");
+      claimButton.textContent = isFound ? "دي بتاعتي" : "لقيتها";
+      claimButton.dataset.item = report.name;
+      claimButton.hidden = delivered;
+
+      const deleteButton = card.querySelector(".delete-button");
+      const restoreButton = card.querySelector(".restore-button");
+      const pendingDeleteLabel = report.type === "مفقود" ? "لم يتم التسليم" : "تم التسليم";
+      deleteButton.textContent = delivered ? "حذف" : pendingDeleteLabel;
+      deleteButton.hidden = false;
+      deleteButton.setAttribute(
+        "aria-label",
+        delivered ? "حذف البلاغ الذي تم تسليمه" : `تغيير حالة البلاغ: ${pendingDeleteLabel}`
+      );
+      restoreButton.hidden = !delivered;
+
+      const existingNotice = card.querySelector(".notice-alert");
+      if (isFound && !existingNotice) {
+        const notice = document.createElement("div");
+        notice.className = "notice-alert";
+        notice.setAttribute("role", "note");
+        notice.textContent = "ملحوظة: الأشياء المفقودة عند مدير المدرسة.";
+        card.querySelector(".item-description").after(notice);
+      } else if (!isFound && existingNotice) {
+        existingNotice.remove();
+      }
+    }
+
     function createReportCard(report) {
       const isFound = report.type === "معثور عليه";
       const visualClass = {
@@ -643,14 +720,10 @@
       card.dataset.delivered = String(Boolean(report.deliveredAt));
       card.dataset.age = String(report.createdAt);
       card.dataset.search = `${report.category} ${report.name} ${report.location} ${report.description}`.toLocaleLowerCase("ar");
-      card.innerHTML = `<div class="item-image ${visualClass}"><span class="status"></span><img class="item-photo" alt="" loading="lazy"></div><div class="item-body"><div class="item-topline"><h3 class="item-title"></h3><span class="item-category"></span></div><p class="item-description"></p><div class="item-meta"><span class="item-location"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s7-4.4 7-11a7 7 0 1 0-14 0c0 6.6 7 11 7 11Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2" stroke="currentColor" stroke-width="1.8"/></svg></span><div class="item-actions"><button class="claim-button" type="button"></button><button class="delete-button" type="button"></button></div></div></div>`;
+      card.innerHTML = `<div class="item-image ${visualClass}"><button class="status" type="button"></button><img class="item-photo" alt="" loading="lazy"></div><div class="item-body"><div class="item-topline"><h3 class="item-title"></h3><span class="item-category"></span></div><p class="item-description"></p><div class="item-meta"><span class="item-location"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s7-4.4 7-11a7 7 0 1 0-14 0c0 6.6 7 11 7 11Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2" stroke="currentColor" stroke-width="1.8"/></svg></span><div class="item-actions"><button class="claim-button" type="button"></button><button class="restore-button" type="button">إعادة للمفقودات</button><button class="delete-button" type="button"></button></div></div></div>`;
       const itemPhoto = card.querySelector(".item-photo");
       itemPhoto.src = report.photo || defaultItemIllustration(report.category);
       itemPhoto.alt = report.photo ? `صورة ${report.name}` : `رسم توضيحي لتصنيف ${report.category}`;
-      const statusBadge = card.querySelector(".status");
-      statusBadge.textContent = report.deliveredAt ? "✓ تم التسليم" : isFound ? "تم العثور عليه" : "مفقود";
-      statusBadge.classList.toggle("missing", !isFound && !report.deliveredAt);
-      statusBadge.classList.toggle("delivered", Boolean(report.deliveredAt));
       card.querySelector(".item-title").textContent = report.name;
       card.querySelector(".item-category").textContent = report.category;
       card.querySelector(".item-description").textContent = report.description;
@@ -659,25 +732,12 @@
         ? report.date
         : reportDate.toLocaleDateString("ar-EG");
       card.querySelector(".item-location").append(document.createTextNode(`${report.location} · ${dateLabel}`));
+      updateReportCardStatus(report, card);
+      const statusBadge = card.querySelector(".status");
       const claimButton = card.querySelector(".claim-button");
-      claimButton.textContent = isFound ? "دي بتاعتي" : "لقيتها";
-      claimButton.dataset.item = report.name;
       const deleteButton = card.querySelector(".delete-button");
-      deleteButton.textContent = report.deliveredAt ? "حذف" : "تم التسليم";
-      deleteButton.setAttribute(
-        "aria-label",
-        report.deliveredAt ? "حذف البلاغ الذي تم تسليمه" : "نقل البلاغ إلى تم التسليم"
-      );
-      if (report.deliveredAt) {
-        claimButton.hidden = true;
-      }
-      if (isFound) {
-        const notice = document.createElement("div");
-        notice.className = "notice-alert";
-        notice.setAttribute("role", "note");
-        notice.textContent = "ملحوظة: الأشياء المفقودة عند مدير المدرسة.";
-        card.querySelector(".item-description").after(notice);
-      }
+      const restoreButton = card.querySelector(".restore-button");
+      statusBadge.addEventListener("click", () => openStatusEditModal(report, card));
       claimButton.addEventListener("click", () => {
         const student = prompt("اكتب اسمك الكامل:");
         if (!student || !student.trim()) return;
@@ -690,7 +750,81 @@
         if (report.deliveredAt) openDeliveredDeleteModal(report, card);
         else openDeleteModal(report, card);
       });
+      restoreButton.addEventListener("click", () => openStatusEditModal(report, card, true));
       return card;
+    }
+
+    function openStatusEditModal(report, card, restoreToMissing = false) {
+      pendingStatusEdit = { report, card, restoreToMissing };
+      statusEditForm.reset();
+      statusEditType.value = restoreToMissing ? "مفقود" : report.type;
+      statusEditType.parentElement.hidden = restoreToMissing;
+      document.getElementById("status-edit-title").textContent = restoreToMissing
+        ? "إعادة البلاغ للمفقودات"
+        : "تعديل حالة البلاغ";
+      document.getElementById("status-edit-submit").textContent = restoreToMissing
+        ? "تأكيد الإعادة"
+        : "حفظ الحالة";
+      document.getElementById("status-edit-report-name").textContent = `البلاغ: ${report.name}`;
+      statusEditModal.classList.add("open");
+      document.body.style.overflow = "hidden";
+      (restoreToMissing ? statusEditPassword : statusEditType).focus();
+    }
+
+    function closeStatusEditModal() {
+      statusEditModal.classList.remove("open");
+      document.body.style.overflow = "";
+      pendingStatusEdit = null;
+    }
+
+    async function changeReportStatus(event) {
+      event.preventDefault();
+      if (!pendingStatusEdit) return;
+      try {
+        const enteredHash = await hashOwnerPassword(
+          statusEditPassword.value,
+          adminPasswordSalt,
+          passwordIterations
+        );
+        if (enteredHash !== adminPasswordHash) {
+          showToast("كلمة مرور المسؤول غير صحيحة؛ لم يتم تعديل الحالة.");
+          statusEditPassword.focus();
+          return;
+        }
+
+        const { report, card, restoreToMissing } = pendingStatusEdit;
+        const nextType = restoreToMissing ? "مفقود" : statusEditType.value;
+        if (!["مفقود", "معثور عليه"].includes(nextType)) {
+          throw new Error("Invalid report status.");
+        }
+        const savedReports = JSON.parse(localStorage.getItem(reportsStorageKey) || "[]");
+        if (!Array.isArray(savedReports)) throw new Error("Saved reports must be an array.");
+        const savedReport = savedReports.find(item => item.id === report.id);
+        if (!savedReport) throw new Error("The report was not found in local storage.");
+        if (report.type === nextType && !report.deliveredAt) {
+          closeStatusEditModal();
+          return;
+        }
+        const confirmMessage = restoreToMissing
+          ? `هل تريد إعادة بلاغ «${report.name}» إلى قائمة المفقودات؟`
+          : `هل تريد تغيير حالة بلاغ «${report.name}» إلى «${nextType === "مفقود" ? "مفقود" : "تم العثور عليه"}»؟`;
+        if (!confirm(confirmMessage)) return;
+
+        savedReport.type = nextType;
+        delete savedReport.deliveredAt;
+        localStorage.setItem(reportsStorageKey, JSON.stringify(savedReports));
+        report.type = nextType;
+        delete report.deliveredAt;
+        updateReportCardStatus(report, card);
+        closeStatusEditModal();
+        filterItems();
+        showToast(restoreToMissing
+          ? "تمت إعادة البلاغ إلى قائمة المفقودات."
+          : `تم تغيير حالة البلاغ إلى «${nextType === "مفقود" ? "مفقود" : "تم العثور عليه"}».`);
+      } catch (error) {
+        console.error("تعذر تعديل حالة البلاغ:", error);
+        showToast("تعذر تعديل حالة البلاغ. حاول مرة أخرى.");
+      }
     }
 
     function openDeleteModal(report, card) {
@@ -803,26 +937,40 @@
           }
         }
 
-        if (!confirm(`هل تريد نقل بلاغ «${report.name}» إلى صفحة تم التسليم؟`)) return;
+        const targetStatusText = report.type === "مفقود" ? "تم التسليم" : "لم يتم التسليم";
+        const confirmMessage = report.type === "مفقود"
+          ? `هل تريد نقل بلاغ «${report.name}» إلى صفحة تم التسليم؟`
+          : `هل تريد إعادة بلاغ «${report.name}» إلى صفحة المفقودات؟`;
+        if (!confirm(confirmMessage)) return;
         const savedReports = JSON.parse(localStorage.getItem(reportsStorageKey) || "[]");
         if (!Array.isArray(savedReports)) throw new Error("Saved reports must be an array.");
         const savedReport = savedReports.find(item => item.id === report.id);
         if (!savedReport) {
           throw new Error("The report was not found in local storage.");
         }
-        savedReport.deliveredAt = Date.now();
+        const wasDelivered = Boolean(report.deliveredAt);
+        if (report.type === "مفقود") {
+          savedReport.deliveredAt = Date.now();
+          report.deliveredAt = savedReport.deliveredAt;
+        } else {
+          delete savedReport.deliveredAt;
+          delete report.deliveredAt;
+        }
         localStorage.setItem(reportsStorageKey, JSON.stringify(savedReports));
-        report.deliveredAt = savedReport.deliveredAt;
-        card.dataset.delivered = "true";
+        card.dataset.delivered = String(Boolean(report.deliveredAt));
         const statusBadge = card.querySelector(".status");
-        statusBadge.textContent = "✓ تم التسليم";
-        statusBadge.classList.remove("missing");
-        statusBadge.classList.add("delivered");
-        card.querySelector(".claim-button").hidden = true;
-        card.querySelector(".delete-button").hidden = true;
+        const nextStatusText = report.deliveredAt ? "✓ تم التسليم" : report.type === "معثور عليه" ? "تم العثور عليه" : "مفقود";
+        statusBadge.textContent = nextStatusText;
+        statusBadge.classList.toggle("missing", !report.deliveredAt && report.type !== "معثور عليه");
+        statusBadge.classList.toggle("delivered", Boolean(report.deliveredAt));
+        card.querySelector(".claim-button").hidden = Boolean(report.deliveredAt);
+        card.querySelector(".delete-button").hidden = false;
+        const deleteButton = card.querySelector(".delete-button");
+        deleteButton.textContent = report.deliveredAt ? "حذف" : (report.type === "مفقود" ? "لم يتم التسليم" : "تم التسليم");
+        deleteButton.setAttribute("aria-label", report.deliveredAt ? "حذف البلاغ الذي تم تسليمه" : `تغيير حالة البلاغ: ${report.type === "مفقود" ? "لم يتم التسليم" : "تم التسليم"}`);
         closeDeleteModal();
         filterItems();
-        showToast("تم نقل البلاغ إلى صفحة تم التسليم.");
+        showToast(report.deliveredAt ? "تم نقل البلاغ إلى صفحة تم التسليم." : "تمت إعادة البلاغ إلى صفحة المفقودات.");
       } catch (error) {
         console.error("تعذر نقل البلاغ إلى صفحة تم التسليم:", error);
         showToast("تعذر نقل البلاغ إلى صفحة تم التسليم. حاول مرة أخرى.");
@@ -904,6 +1052,11 @@
     deliveredDeleteModal.addEventListener("click", event => {
       if (event.target === deliveredDeleteModal) closeDeliveredDeleteModal();
     });
+    document.getElementById("status-edit-close").addEventListener("click", closeStatusEditModal);
+    statusEditModal.addEventListener("click", event => {
+      if (event.target === statusEditModal) closeStatusEditModal();
+    });
+    statusEditForm.addEventListener("submit", changeReportStatus);
     deliveredDeleteForm.addEventListener("submit", deleteDeliveredReport);
     deliveredAuthForm.addEventListener("submit", async event => {
       event.preventDefault();
@@ -943,7 +1096,8 @@
     });
     document.addEventListener("keydown", event => {
       if (event.key === "Escape") {
-        if (deliveredDeleteModal.classList.contains("open")) closeDeliveredDeleteModal();
+        if (statusEditModal.classList.contains("open")) closeStatusEditModal();
+        else if (deliveredDeleteModal.classList.contains("open")) closeDeliveredDeleteModal();
         else if (deliveredAuthModal.classList.contains("open")) closeDeliveredAuthModal();
         else if (deleteModal.classList.contains("open")) closeDeleteModal();
         else if (modal.classList.contains("open")) closeModal();
