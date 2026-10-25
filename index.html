@@ -129,6 +129,7 @@
     .item-image.book { background: #f0e5e2; }
     .item-image.watch { background: #e7e9f1; }
     .item-image.case { background: #f2eddc; }
+    .item-photo { position: relative; z-index: 1; width: min(78%, 190px); height: 150px; object-fit: contain; filter: drop-shadow(0 10px 9px rgba(32,53,42,.13)); }
     .status { position: absolute; z-index: 2; top: 13px; right: 13px; padding: 6px 10px; border-radius: 99px; color: #21694f; background: rgba(255,255,255,.9); font-size: 10px; font-weight: 600; }
     .status.missing { color: #a96234; }
     .item-body { padding: 15px 16px 14px; }
@@ -182,6 +183,8 @@
     .field input, .field select, .field textarea { width: 100%; min-height: 42px; padding: 10px 11px; border: 1px solid #e3e9e1; border-radius: 10px; outline: none; background: #fbfcfa; color: var(--ink); font-size: 12px; }
     .field input:focus, .field select:focus, .field textarea:focus { border-color: #86b5a1; box-shadow: 0 0 0 3px rgba(36,116,93,.08); }
     .field textarea { min-height: 75px; resize: vertical; }
+    .photo-preview { width: 110px; height: 90px; border: 1px solid var(--line); border-radius: 10px; object-fit: cover; }
+    .photo-preview[hidden] { display: none; }
     .form-hint { margin: 13px 0; padding: 10px 12px; border-radius: 10px; color: #738076; background: #f3f6ef; font-size: 10px; line-height: 1.7; }
     .modal-submit { width: 100%; margin-top: 2px; }
     .toast { position: fixed; z-index: 20; bottom: 22px; left: 50%; display: none; max-width: calc(100% - 30px); padding: 12px 18px; border-radius: 12px; color: white; background: #234e3f; box-shadow: var(--shadow); font-size: 13px; transform: translateX(-50%); }
@@ -289,7 +292,7 @@
               <svg viewBox="0 0 120 140" fill="none" aria-hidden="true"><path d="M37 34V25c0-13 10-21 23-21s23 8 23 21v9" stroke="#657448" stroke-width="8" stroke-linecap="round"/><path d="M23 36c0-7 6-13 13-13h48c7 0 13 6 13 13l7 82c1 9-6 16-15 16H31c-9 0-16-7-15-16l7-82Z" fill="#8B9B62"/><path d="M26 41c0-4 4-8 8-8h52c4 0 8 4 8 8l5 68c1 6-4 11-10 11H31c-6 0-11-5-10-11l5-68Z" fill="#A7B681"/><path d="M39 63c0-5 4-9 9-9h26c5 0 9 4 9 9v24c0 5-4 9-9 9H48c-5 0-9-4-9-9V63Z" fill="#71804F"/><path d="M45 68h32" stroke="#C9D3AA" stroke-width="3" stroke-linecap="round"/><path d="M39 118v8M81 118v8" stroke="#596745" stroke-width="6" stroke-linecap="round"/></svg>
             </div>
             <h3>أضف بلاغك</h3>
-            <p>اكتب وصف الغرض ومكانه، وابعث البلاغ على واتساب.</p>
+            <p>اكتب تفاصيل الغرض وأضف البلاغ. ولو عثرت على غرض، اترك رقمًا للتواصل معك.</p>
           </article>
           <div class="float-note note-two"><span class="float-icon">🤝</span><span><strong>بأمان وخصوصية</strong><small>التواصل عن طريق إدارة المدرسة</small></span></div>
         </div>
@@ -299,7 +302,7 @@
     <div class="container">
       <section class="section" id="items">
         <div class="section-heading">
-          <div><p class="section-kicker">بلاغات الطلاب</p><h2>المفقودات والمعثورات</h2><p class="section-subtitle">القائمة تبدأ فارغة. أضف بلاغك؛ سيظهر على هذا الجهاز ويُرسل للإدارة عبر واتساب.</p></div>
+          <div><p class="section-kicker">بلاغات الطلاب</p><h2>المفقودات والمعثورات</h2><p class="section-subtitle">القائمة تبدأ فارغة. أضف بلاغك؛ سيظهر على هذا الجهاز فقط.</p></div>
           <button class="button button-primary open-report" type="button">＋ أضف بلاغ جديد</button>
         </div>
         <div class="toolbar">
@@ -361,14 +364,15 @@
           <div class="field"><label for="report-location">المكان</label><input id="report-location" required maxlength="50" placeholder="مثال: الدور الأول"></div>
           <div class="field"><label for="report-date">التاريخ</label><input id="report-date" type="date" required></div>
           <div class="field full"><label for="report-description">وصف يساعدنا نميّزه</label><textarea id="report-description" required maxlength="240" placeholder="اللون، العلامة المميزة، أو أي تفاصيل..."></textarea></div>
+          <div class="field full"><label for="report-image">صورة الغرض (اختياري)</label><input id="report-image" type="file" accept="image/jpeg,image/png,image/webp,image/gif"><img class="photo-preview" id="report-image-preview" alt="معاينة صورة الغرض" hidden><small class="section-subtitle">ارفع صورة واضحة للغرض؛ لو ما رفعتش صورة هنعرض رسمة مناسبة لتصنيفه.</small></div>
           <div class="field"><label for="report-student">اسم الطالب/ة (مطلوب)</label><input id="report-student" required maxlength="50" placeholder="اكتب اسمك الكامل"></div>
           <div class="field"><label for="report-class">الفصل (مطلوب)</label><input id="report-class" required maxlength="20" placeholder="مثال: ٢/ب"></div>
           <div class="field full" id="report-contact-field" hidden><label for="report-contact">رقم تواصل الشخص اللي عثر على الغرض (هيظهر للطلاب)</label><input id="report-contact" type="tel" inputmode="tel" autocomplete="tel" maxlength="24" placeholder="مثال: 01012345678"></div>
           <div class="field"><label for="report-owner-password">كلمة مرور لحذف بلاغك (مطلوب)</label><input id="report-owner-password" type="password" required minlength="6" maxlength="100" autocomplete="new-password" placeholder="٦ أحرف على الأقل"></div>
           <div class="field"><label for="report-owner-password-confirm">تأكيد كلمة المرور</label><input id="report-owner-password-confirm" type="password" required minlength="6" maxlength="100" autocomplete="new-password" placeholder="اكتبها مرة أخرى"></div>
         </div>
-        <div class="form-hint">اختر كلمة مرور خاصة ببلاغك واحفظها؛ ستحتاج اسمك وكلمة المرور لحذف البلاغ. كلمة المرور لا تُرسل عبر واتساب.</div>
-        <div class="form-hint">البلاغات تُحفظ على هذا الجهاز فقط، ولا تُرسل تلقائيًا عبر واتساب.</div>
+        <div class="form-hint">اختر كلمة مرور خاصة ببلاغك واحفظها؛ ستحتاج اسمك وكلمة المرور لحذف البلاغ. لا تشارك كلمة المرور مع أي شخص.</div>
+        <div class="form-hint">رقم التواصل في بلاغ «عُثر عليه» سيظهر للطلاب على بطاقة البلاغ. البلاغات محفوظة على هذا الجهاز فقط.</div>
         <button class="button button-primary modal-submit" type="submit">إضافة البلاغ</button>
       </form>
     </div>
@@ -394,6 +398,8 @@
     const reportTypeField = document.getElementById("report-type");
     const reportContactField = document.getElementById("report-contact-field");
     const reportContactInput = document.getElementById("report-contact");
+    const reportImageInput = document.getElementById("report-image");
+    const reportImagePreview = document.getElementById("report-image-preview");
     const validateOwnerPasswordConfirmation = () => {
       ownerPasswordConfirmField.setCustomValidity(
         ownerPasswordConfirmField.value === ownerPasswordField.value ? "" : "كلمتا المرور غير متطابقتين."
@@ -414,9 +420,52 @@
         .replace(/[٠-٩]/g, digit => String("٠١٢٣٤٥٦٧٨٩".indexOf(digit)))
         .replace(/[۰-۹]/g, digit => String("۰۱۲۳۴۵۶۷۸۹".indexOf(digit)));
       const compact = westernDigits.replace(/[\s().-]/g, "");
-      const international = compact.startsWith("00") ? `+${compact.slice(2)}` : compact;
+      let international = compact.startsWith("00") ? `+${compact.slice(2)}` : compact;
+      if (!international.startsWith("+") && international.startsWith("0")) {
+        international = `+20${international.slice(1)}`;
+      }
       if (!/^\+?\d{10,15}$/.test(international)) return "";
       return international.startsWith("+") ? international : `+${international}`;
+    }
+
+    async function prepareReportImage(file) {
+      if (!file) return "";
+      if (!file.type.startsWith("image/")) throw new Error("اختار ملف صورة صالحًا.");
+      if (file.size > 8 * 1024 * 1024) throw new Error("حجم الصورة أكبر من ٨ ميجابايت.");
+      if (typeof createImageBitmap !== "function") throw new Error("المتصفح لا يدعم تجهيز الصور.");
+
+      const bitmap = await createImageBitmap(file);
+      try {
+        let scale = Math.min(1, 800 / Math.max(bitmap.width, bitmap.height));
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+        if (!context) throw new Error("تعذر تجهيز الصورة.");
+        for (let attempt = 0; attempt < 4; attempt++) {
+          canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+          canvas.height = Math.max(1, Math.round(bitmap.height * scale));
+          context.fillStyle = "#ffffff";
+          context.fillRect(0, 0, canvas.width, canvas.height);
+          context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+          const imageData = canvas.toDataURL("image/jpeg", attempt === 0 ? 0.75 : 0.58);
+          if (imageData.length <= 280000) return imageData;
+          scale *= 0.7;
+        }
+        throw new Error("الصورة كبيرة جدًا بعد ضغطها؛ اختار صورة أصغر.");
+      } finally {
+        bitmap.close();
+      }
+    }
+
+    function defaultItemIllustration(category) {
+      const drawings = {
+        "شنط": '<path d="M38 39v-8a22 22 0 0 1 44 0v8" fill="none" stroke="#556b45" stroke-width="7" stroke-linecap="round"/><rect x="22" y="36" width="76" height="76" rx="18" fill="#829567"/><rect x="38" y="64" width="44" height="31" rx="9" fill="#62764d"/><path d="M45 72h30M37 110v8m46-8v8" stroke="#d5dfba" stroke-width="4" stroke-linecap="round"/>',
+        "أدوات مدرسية": '<path d="M28 28h37a9 9 0 0 1 9 9v68H37a9 9 0 0 1-9-9V28Z" fill="#d88f68"/><path d="M76 37a9 9 0 0 1 9-9h9v77h-9a9 9 0 0 0-9 9V37Z" fill="#e8b17b"/><path d="M39 47h21m-21 12h21m24-12h8m-8 12h8" stroke="#fff1db" stroke-width="4" stroke-linecap="round"/>',
+        "إلكترونيات": '<rect x="29" y="33" width="62" height="69" rx="15" fill="#434d60"/><rect x="38" y="42" width="44" height="47" rx="8" fill="#273843"/><path d="M48 60h25" stroke="#beedca" stroke-width="5" stroke-linecap="round"/><circle cx="60" cy="96" r="3" fill="#c6d3dd"/>',
+        "أغراض شخصية": '<circle cx="57" cy="60" r="25" fill="#e4bd79"/><circle cx="57" cy="60" r="14" fill="#fff8e8"/><path d="m76 78 19 20m-9-10 8-8m-17 1 8-8" stroke="#9a7950" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>',
+        "أخرى": '<rect x="25" y="35" width="70" height="57" rx="13" fill="#8db6a0"/><path d="M25 51h70" stroke="#5b9078" stroke-width="6"/><circle cx="60" cy="72" r="8" fill="#f5e8bd"/><path d="M44 105h32" stroke="#678775" stroke-width="7" stroke-linecap="round"/>'
+      };
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 130"><ellipse cx="60" cy="112" rx="42" ry="7" fill="#19372f" opacity=".1"/>${drawings[category] || drawings["أخرى"]}</svg>`;
+      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
     }
 
     function showToast(message) {
@@ -479,7 +528,10 @@
       card.dataset.status = isFound ? "found" : "missing";
       card.dataset.age = String(report.createdAt);
       card.dataset.search = `${report.category} ${report.name} ${report.location} ${report.description}`.toLocaleLowerCase("ar");
-      card.innerHTML = `<div class="item-image ${visualClass}"><span class="status"></span><span aria-hidden="true" style="font-size:54px;position:relative;z-index:1">${isFound ? "📦" : "🔎"}</span></div><div class="item-body"><div class="item-topline"><h3 class="item-title"></h3><span class="item-category"></span></div><p class="item-description"></p><div class="item-meta"><span class="item-location"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s7-4.4 7-11a7 7 0 1 0-14 0c0 6.6 7 11 7 11Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2" stroke="currentColor" stroke-width="1.8"/></svg></span><div class="item-actions"><button class="claim-button" type="button"></button><button class="delete-button" type="button" aria-label="حذف البلاغ">حذف</button></div></div></div>`;
+      card.innerHTML = `<div class="item-image ${visualClass}"><span class="status"></span><img class="item-photo" alt="" loading="lazy"></div><div class="item-body"><div class="item-topline"><h3 class="item-title"></h3><span class="item-category"></span></div><p class="item-description"></p><div class="item-meta"><span class="item-location"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s7-4.4 7-11a7 7 0 1 0-14 0c0 6.6 7 11 7 11Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2" stroke="currentColor" stroke-width="1.8"/></svg></span><div class="item-actions"><button class="claim-button" type="button"></button><button class="delete-button" type="button" aria-label="حذف البلاغ">حذف</button></div></div></div>`;
+      const itemPhoto = card.querySelector(".item-photo");
+      itemPhoto.src = report.photo || defaultItemIllustration(report.category);
+      itemPhoto.alt = report.photo ? `صورة ${report.name}` : `رسم توضيحي لتصنيف ${report.category}`;
       card.querySelector(".status").textContent = isFound ? "تم العثور عليه" : "مفقود";
       card.querySelector(".status").classList.toggle("missing", !isFound);
       card.querySelector(".item-title").textContent = report.name;
@@ -626,6 +678,25 @@
     });
     searchInput.addEventListener("input", filterItems);
     reportTypeField.addEventListener("change", updateContactField);
+    reportImageInput.addEventListener("change", async () => {
+      const file = reportImageInput.files[0];
+      if (!file) {
+        reportImagePreview.hidden = true;
+        reportImagePreview.removeAttribute("src");
+        return;
+      }
+      try {
+        reportImagePreview.src = await prepareReportImage(file);
+        reportImagePreview.hidden = false;
+        showToast("الصورة جاهزة للإضافة مع البلاغ.");
+      } catch (error) {
+        console.error("تعذر تجهيز صورة البلاغ:", error);
+        reportImageInput.value = "";
+        reportImagePreview.hidden = true;
+        reportImagePreview.removeAttribute("src");
+        showToast(error.message || "تعذر تجهيز الصورة.");
+      }
+    });
     updateContactField();
     function sortItems() {
       [...grid.querySelectorAll(".item-card")]
@@ -660,6 +731,14 @@
       const location = document.getElementById("report-location").value.trim();
       const date = document.getElementById("report-date").value;
       const description = document.getElementById("report-description").value.trim();
+      let photo = "";
+      try {
+        photo = await prepareReportImage(reportImageInput.files[0]);
+      } catch (error) {
+        console.error("تعذر تجهيز صورة البلاغ:", error);
+        showToast(error.message || "تعذر تجهيز الصورة.");
+        return;
+      }
       let contactPhone = "";
       if (type === "معثور عليه") {
         contactPhone = normalizePhoneNumber(reportContactInput.value);
@@ -672,7 +751,7 @@
         const passwordHash = await hashOwnerPassword(ownerPassword, saltHex);
         const report = {
           id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`,
-          type, category, name, location, date, description, student, studentClass, contactPhone,
+          type, category, name, location, date, description, student, studentClass, contactPhone, photo,
           ownerCredential: { salt: saltHex, hash: passwordHash, iterations: passwordIterations },
           createdAt: Date.now()
         };
@@ -684,6 +763,8 @@
         grid.prepend(createReportCard(report));
         sortItems();
         reportForm.reset();
+        reportImagePreview.hidden = true;
+        reportImagePreview.removeAttribute("src");
         const today = new Date();
         document.getElementById("report-date").value = new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
         closeModal();
