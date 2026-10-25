@@ -133,13 +133,14 @@
     .item-photo { position: relative; z-index: 1; width: min(78%, 190px); height: 150px; object-fit: contain; filter: drop-shadow(0 10px 9px rgba(32,53,42,.13)); }
     .status { position: absolute; z-index: 2; top: 13px; right: 13px; padding: 6px 10px; border-radius: 99px; color: #21694f; background: rgba(255,255,255,.9); font-size: 10px; font-weight: 600; }
     .status.missing { color: #a96234; }
+    .status.delivered { color: #155e36; background: #dcfce7; }
     .item-body { padding: 17px 18px 16px; }
     .item-topline { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
     .item-title { margin: 0; font-size: 16px; font-weight: 700; }
     .item-category { padding: 4px 8px; border-radius: 99px; color: #667b6d; background: #f1f5ef; font-size: 10px; white-space: nowrap; }
     .item-description { min-height: 38px; margin: 8px 0 12px; color: #75837a; font-size: 11px; line-height: 1.7; }
-    .contact-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 9px; padding: 7px 10px; border-radius: 8px; color: var(--green); background: #edf4ec; direction: ltr; font-family: "DM Sans", sans-serif; font-size: 11px; font-weight: 700; }
-    .contact-link:hover { color: white; background: var(--green); }
+    .notice-alert { padding: 10px 12px; border: 1px solid #e3bc00; border-radius: 10px; color: #000000; background: #FFC107; font-size: 12px; font-weight: 700; line-height: 1.7; }
+    .item-body > .notice-alert { margin-top: 10px; }
     .item-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 12px; border-top: 1px solid #f0f2ed; color: #859087; font-size: 10px; }
     .item-location { display: inline-flex; align-items: center; gap: 4px; }
     .item-location svg { width: 13px; height: 13px; }
@@ -306,8 +307,9 @@
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5 19 6v5.5c0 4.4-2.8 7.6-7 9-4.2-1.4-7-4.6-7-9V6l7-2.5Z" stroke="currentColor" stroke-width="1.7"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
             مجتمع مدرسي أكثر تعاونًا
           </div>
-          <h1>كل غرض له <em>صاحبه.</em><br>خلّينا نوصّله له.</h1>
+          <h1>كل غرض له <em>صاحب.</em><br>خلّينا نوصّله.</h1>
           <h1><em>تحت رعايه مدرسه السادات</em></h1>
+          <h1 style="font-size: 40px; padding-top: 10px;"><em>الثانويه بنين باداره السنبلاوين</em></h1>
           <p class="hero-copy">ضاعت منك حاجة في المدرسة؟ أو لقيت غرض مش بتاعك؟ هنا هتلاقي طريقة سهلة وآمنة عشان كل حاجة ترجع لصاحبها.</p>
           <div class="hero-buttons">
             <button class="button button-primary open-report" type="button">أبلغ عن غرض مفقود <span>←</span></button>
@@ -328,7 +330,7 @@
               <svg viewBox="0 0 120 140" fill="none" aria-hidden="true"><path d="M37 34V25c0-13 10-21 23-21s23 8 23 21v9" stroke="#657448" stroke-width="8" stroke-linecap="round"/><path d="M23 36c0-7 6-13 13-13h48c7 0 13 6 13 13l7 82c1 9-6 16-15 16H31c-9 0-16-7-15-16l7-82Z" fill="#8B9B62"/><path d="M26 41c0-4 4-8 8-8h52c4 0 8 4 8 8l5 68c1 6-4 11-10 11H31c-6 0-11-5-10-11l5-68Z" fill="#A7B681"/><path d="M39 63c0-5 4-9 9-9h26c5 0 9 4 9 9v24c0 5-4 9-9 9H48c-5 0-9-4-9-9V63Z" fill="#71804F"/><path d="M45 68h32" stroke="#C9D3AA" stroke-width="3" stroke-linecap="round"/><path d="M39 118v8M81 118v8" stroke="#596745" stroke-width="6" stroke-linecap="round"/></svg>
             </div>
             <h3>أضف بلاغك</h3>
-            <p>اكتب تفاصيل الغرض وأضف البلاغ. ولو عثرت على غرض، اترك رقمًا للتواصل معك.</p>
+            <p>اكتب تفاصيل الغرض وأضف البلاغ. ستظهر ملاحظة ثابتة على بلاغات الأغراض المعثور عليها.</p>
           </article>
           <div class="float-note note-two"><span class="float-icon">🤝</span><span><strong>بأمان وخصوصية</strong><small>التواصل عن طريق إدارة المدرسة</small></span></div>
         </div>
@@ -358,6 +360,7 @@
           <button class="category-tab" type="button" data-filter="إلكترونيات">إلكترونيات</button>
           <button class="category-tab" type="button" data-filter="أغراض شخصية">أغراض شخصية</button>
           <button class="category-tab" type="button" data-filter="أخرى">أخرى</button>
+          <button class="category-tab" type="button" data-filter="تم التسليم">تم التسليم</button>
         </div>
         <div class="items-grid" id="items-grid">
         </div>
@@ -395,7 +398,7 @@
       </div>
       <p class="credits-wish">تمنياتنا لكم بالتفوق والنجاح دائمًا ✨</p>
     </section>
-    <div class="container security-note">صاحب البلاغ يحذفه بكلمة مروره، ويمكن للمسؤول استعادته عند نسيانها. البيانات محلية على هذا الجهاز، وكلمة مرور المسؤول داخل الصفحة ليست حماية خادم آمنة.</div>
+    <div class="container security-note">صاحب البلاغ ينقله إلى صفحة تم التسليم بكلمة مروره، ويمكن للمسؤول نقله عند نسيانها. البيانات محلية على هذا الجهاز، وكلمة مرور المسؤول داخل الصفحة ليست حماية خادم آمنة.</div>
   </footer>
 
   <div class="modal-backdrop" id="report-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
@@ -415,20 +418,49 @@
           <div class="field full"><label for="report-image">صورة الغرض (اختياري)</label><input id="report-image" type="file" accept="image/jpeg,image/png,image/webp,image/gif"><img class="photo-preview" id="report-image-preview" alt="معاينة صورة الغرض" hidden><small class="section-subtitle">ارفع صورة واضحة للغرض؛ لو ما رفعتش صورة هنعرض رسمة مناسبة لتصنيفه.</small></div>
           <div class="field"><label for="report-student">اسم الطالب/ة (مطلوب)</label><input id="report-student" required maxlength="50" placeholder="اكتب اسمك الكامل"></div>
           <div class="field"><label for="report-class">الفصل (مطلوب)</label><input id="report-class" required maxlength="20" placeholder="مثال: ٢/ب"></div>
-          <div class="field full" id="report-contact-field" hidden><label for="report-contact">رقم تواصل الشخص اللي عثر على الغرض (هيظهر للطلاب)</label><input id="report-contact" type="tel" inputmode="tel" autocomplete="tel" maxlength="24" placeholder="مثال: 01012345678"></div>
-          <div class="field"><label for="report-owner-password">كلمة مرور لحذف بلاغك (مطلوب)</label><input id="report-owner-password" type="password" required minlength="6" maxlength="100" autocomplete="new-password" placeholder="٦ أحرف على الأقل"></div>
+          <div class="field full" id="report-found-notice" hidden><div class="notice-alert" role="note">ملحوظة: الأشياء المفقودة عند مدير المدرسة.</div></div>
+          <div class="field"><label for="report-owner-password">كلمة مرور لنقل بلاغك إلى تم التسليم (مطلوب)</label><input id="report-owner-password" type="password" required minlength="6" maxlength="100" autocomplete="new-password" placeholder="٦ أحرف على الأقل"></div>
           <div class="field"><label for="report-owner-password-confirm">تأكيد كلمة المرور</label><input id="report-owner-password-confirm" type="password" required minlength="6" maxlength="100" autocomplete="new-password" placeholder="اكتبها مرة أخرى"></div>
         </div>
-        <div class="form-hint">اختر كلمة مرور خاصة ببلاغك واحفظها؛ ستحتاج اسمك وكلمة المرور لحذف البلاغ. لا تشارك كلمة المرور مع أي شخص.</div>
-        <div class="form-hint">رقم التواصل في بلاغ «عُثر عليه» سيظهر للطلاب على بطاقة البلاغ. البلاغات محفوظة على هذا الجهاز فقط.</div>
+        <div class="form-hint">اختر كلمة مرور خاصة ببلاغك واحفظها؛ ستحتاج اسمك وكلمة المرور لنقل البلاغ إلى صفحة تم التسليم. لا تشارك كلمة المرور مع أي شخص.</div>
         <button class="button button-primary modal-submit" type="submit">إضافة البلاغ</button>
+      </form>
+    </div>
+  </div>
+  <div class="modal-backdrop" id="delivered-auth-modal" role="dialog" aria-modal="true" aria-labelledby="delivered-auth-title">
+    <div class="modal">
+      <div class="modal-header">
+        <div><h2 id="delivered-auth-title">قسم تم التسليم</h2><p>أدخل كلمة مرور المسؤول لعرض البلاغات التي تم تسليمها.</p></div>
+        <button class="close-button" id="delivered-auth-close" type="button" aria-label="إغلاق">×</button>
+      </div>
+      <form id="delivered-auth-form">
+        <div class="field">
+          <label for="delivered-admin-password">كلمة مرور المسؤول</label>
+          <input id="delivered-admin-password" type="password" autocomplete="current-password" required placeholder="أدخل كلمة مرور المسؤول">
+        </div>
+        <button class="button button-primary modal-submit" type="submit">عرض تم التسليم</button>
+      </form>
+    </div>
+  </div>
+  <div class="modal-backdrop" id="delivered-delete-modal" role="dialog" aria-modal="true" aria-labelledby="delivered-delete-title">
+    <div class="modal">
+      <div class="modal-header">
+        <div><h2 id="delivered-delete-title">حذف بلاغ تم تسليمه</h2><p id="delivered-delete-report-name"></p></div>
+        <button class="close-button" id="delivered-delete-close" type="button" aria-label="إغلاق">×</button>
+      </div>
+      <form id="delivered-delete-form">
+        <div class="field">
+          <label for="delivered-delete-password">كلمة مرور المسؤول</label>
+          <input id="delivered-delete-password" type="password" autocomplete="current-password" required placeholder="أدخل كلمة مرور المسؤول">
+        </div>
+        <button class="button button-primary modal-submit" type="submit">تأكيد الحذف النهائي</button>
       </form>
     </div>
   </div>
   <div class="modal-backdrop" id="delete-modal" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title">
     <div class="modal">
       <div class="modal-header">
-        <div><h2 id="delete-modal-title">حذف البلاغ</h2><p id="delete-report-name"></p></div>
+        <div><h2 id="delete-modal-title">نقل البلاغ إلى تم التسليم</h2><p id="delete-report-name"></p></div>
         <button class="close-button" id="delete-modal-close" type="button" aria-label="إغلاق">×</button>
       </div>
       <div class="field">
@@ -442,15 +474,15 @@
           <button class="button button-light" id="admin-recovery-toggle" type="button">نسيت الكود؟ المسؤول</button>
         </div>
       </div>
-      <button class="button button-primary modal-submit" id="owner-delete-submit" type="button">حذف بلاغي</button>
+      <button class="button button-primary modal-submit" id="owner-delete-submit" type="button">نقل البلاغ إلى تم التسليم</button>
       <div class="admin-recovery" id="admin-recovery" hidden>
         <div class="field">
           <label for="admin-password">كلمة مرور المسؤول</label>
           <input id="admin-password" type="password" autocomplete="off" placeholder="أدخل كلمة مرور المسؤول">
         </div>
-        <button class="button button-light modal-submit" id="admin-delete-submit" type="button">تأكيد المسؤول وحذف البلاغ</button>
+        <button class="button button-light modal-submit" id="admin-delete-submit" type="button">تأكيد المسؤول ونقل البلاغ</button>
       </div>
-      <div class="form-hint">إذا نسيت كلمة مرور البلاغ، استخدم خيار المسؤول. تأكيد المسؤول يسمح بحذف هذا البلاغ فقط.</div>
+      <div class="form-hint">إذا نسيت كلمة مرور البلاغ، استخدم خيار المسؤول. بعد التأكيد سيظهر البلاغ في صفحة تم التسليم بعلامة صح.</div>
     </div>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -458,6 +490,12 @@
   <script>
     const modal = document.getElementById("report-modal");
     const deleteModal = document.getElementById("delete-modal");
+    const deliveredAuthModal = document.getElementById("delivered-auth-modal");
+    const deliveredAuthForm = document.getElementById("delivered-auth-form");
+    const deliveredAdminPassword = document.getElementById("delivered-admin-password");
+    const deliveredDeleteModal = document.getElementById("delivered-delete-modal");
+    const deliveredDeleteForm = document.getElementById("delivered-delete-form");
+    const deliveredDeletePassword = document.getElementById("delivered-delete-password");
     const reportForm = document.getElementById("report-form");
     const toast = document.getElementById("toast");
     const grid = document.getElementById("items-grid");
@@ -471,8 +509,9 @@
     const passwordIterations = 120000;
     localStorage.removeItem("luqta-delete-password");
     const adminPasswordSalt = "6c757174612d61646d696e2d73616c74";
-    const adminPasswordHash = "dfd1c4b38d4aebde2b30ae006b0359729ee58af47f453b4a89606d024e31cd27";
+    const adminPasswordHash = "a2f473db492dd1aab975efdeea3336c20318dccb3045fbaeebc48fd0d6bcb111";
     let pendingDelete = null;
+    let pendingDeliveredDelete = null;
     const deleteOwnerName = document.getElementById("delete-owner-name");
     const deleteOwnerPassword = document.getElementById("delete-owner-password");
     const adminPasswordField = document.getElementById("admin-password");
@@ -480,8 +519,7 @@
     const ownerPasswordField = document.getElementById("report-owner-password");
     const ownerPasswordConfirmField = document.getElementById("report-owner-password-confirm");
     const reportTypeField = document.getElementById("report-type");
-    const reportContactField = document.getElementById("report-contact-field");
-    const reportContactInput = document.getElementById("report-contact");
+    const reportFoundNotice = document.getElementById("report-found-notice");
     const reportImageInput = document.getElementById("report-image");
     const reportImagePreview = document.getElementById("report-image-preview");
     const validateOwnerPasswordConfirmation = () => {
@@ -492,24 +530,9 @@
     ownerPasswordField.addEventListener("input", validateOwnerPasswordConfirmation);
     ownerPasswordConfirmField.addEventListener("input", validateOwnerPasswordConfirmation);
 
-    function updateContactField() {
+    function updateFoundNotice() {
       const found = reportTypeField.value === "معثور عليه";
-      reportContactField.hidden = !found;
-      reportContactInput.required = found;
-      reportContactInput.setCustomValidity("");
-    }
-
-    function normalizePhoneNumber(value) {
-      const westernDigits = value
-        .replace(/[٠-٩]/g, digit => String("٠١٢٣٤٥٦٧٨٩".indexOf(digit)))
-        .replace(/[۰-۹]/g, digit => String("۰۱۲۳۴۵۶۷۸۹".indexOf(digit)));
-      const compact = westernDigits.replace(/[\s().-]/g, "");
-      let international = compact.startsWith("00") ? `+${compact.slice(2)}` : compact;
-      if (!international.startsWith("+") && international.startsWith("0")) {
-        international = `+20${international.slice(1)}`;
-      }
-      if (!/^\+?\d{10,15}$/.test(international)) return "";
-      return international.startsWith("+") ? international : `+${international}`;
+      reportFoundNotice.hidden = !found;
     }
 
     async function prepareReportImage(file) {
@@ -585,15 +608,22 @@
       const cards = [...grid.querySelectorAll(".item-card")];
       let visibleCount = 0;
       cards.forEach(card => {
-        const categoryMatches = activeCategory === "الكل" || card.dataset.category === activeCategory;
+        const categoryMatches = activeCategory === "الكل" || activeCategory === "تم التسليم" ||
+          card.dataset.category === activeCategory;
+        const delivered = card.dataset.delivered === "true";
+        const statusMatches = activeCategory === "تم التسليم" ? delivered : !delivered;
         const searchMatches = !query || `${card.dataset.search} ${card.textContent}`.toLocaleLowerCase("ar").includes(query);
-        const visible = categoryMatches && searchMatches;
+        const visible = statusMatches && categoryMatches && searchMatches;
         card.hidden = !visible;
         if (visible) visibleCount++;
       });
-      emptyState.textContent = cards.length
-        ? "مفيش أغراض مطابقة للبحث. جرّب كلمة تانية أو اختار تصنيف مختلف."
-        : "لسه مفيش بلاغات. اضغط «أضف بلاغ جديد» لو فقدت غرضًا أو عثرت على غرض.";
+      emptyState.textContent = visibleCount
+        ? ""
+        : activeCategory === "تم التسليم"
+          ? "لا توجد بلاغات في صفحة تم التسليم."
+          : cards.length
+            ? "مفيش أغراض مطابقة للبحث. جرّب كلمة تانية أو اختار تصنيف مختلف."
+            : "لسه مفيش بلاغات. اضغط «أضف بلاغ جديد» لو فقدت غرضًا أو عثرت على غرض.";
       emptyState.style.display = visibleCount ? "none" : "block";
     }
 
@@ -610,14 +640,17 @@
       card.className = "item-card";
       card.dataset.category = report.category;
       card.dataset.status = isFound ? "found" : "missing";
+      card.dataset.delivered = String(Boolean(report.deliveredAt));
       card.dataset.age = String(report.createdAt);
       card.dataset.search = `${report.category} ${report.name} ${report.location} ${report.description}`.toLocaleLowerCase("ar");
-      card.innerHTML = `<div class="item-image ${visualClass}"><span class="status"></span><img class="item-photo" alt="" loading="lazy"></div><div class="item-body"><div class="item-topline"><h3 class="item-title"></h3><span class="item-category"></span></div><p class="item-description"></p><div class="item-meta"><span class="item-location"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s7-4.4 7-11a7 7 0 1 0-14 0c0 6.6 7 11 7 11Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2" stroke="currentColor" stroke-width="1.8"/></svg></span><div class="item-actions"><button class="claim-button" type="button"></button><button class="delete-button" type="button" aria-label="حذف البلاغ">حذف</button></div></div></div>`;
+      card.innerHTML = `<div class="item-image ${visualClass}"><span class="status"></span><img class="item-photo" alt="" loading="lazy"></div><div class="item-body"><div class="item-topline"><h3 class="item-title"></h3><span class="item-category"></span></div><p class="item-description"></p><div class="item-meta"><span class="item-location"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s7-4.4 7-11a7 7 0 1 0-14 0c0 6.6 7 11 7 11Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2" stroke="currentColor" stroke-width="1.8"/></svg></span><div class="item-actions"><button class="claim-button" type="button"></button><button class="delete-button" type="button"></button></div></div></div>`;
       const itemPhoto = card.querySelector(".item-photo");
       itemPhoto.src = report.photo || defaultItemIllustration(report.category);
       itemPhoto.alt = report.photo ? `صورة ${report.name}` : `رسم توضيحي لتصنيف ${report.category}`;
-      card.querySelector(".status").textContent = isFound ? "تم العثور عليه" : "مفقود";
-      card.querySelector(".status").classList.toggle("missing", !isFound);
+      const statusBadge = card.querySelector(".status");
+      statusBadge.textContent = report.deliveredAt ? "✓ تم التسليم" : isFound ? "تم العثور عليه" : "مفقود";
+      statusBadge.classList.toggle("missing", !isFound && !report.deliveredAt);
+      statusBadge.classList.toggle("delivered", Boolean(report.deliveredAt));
       card.querySelector(".item-title").textContent = report.name;
       card.querySelector(".item-category").textContent = report.category;
       card.querySelector(".item-description").textContent = report.description;
@@ -629,15 +662,21 @@
       const claimButton = card.querySelector(".claim-button");
       claimButton.textContent = isFound ? "دي بتاعتي" : "لقيتها";
       claimButton.dataset.item = report.name;
-      if (isFound && report.contactPhone) {
-        const contactLink = document.createElement("a");
-        contactLink.className = "contact-link";
-        contactLink.href = `https://wa.me/${report.contactPhone.replace(/\D/g, "")}`;
-        contactLink.target = "_blank";
-        contactLink.rel = "noopener noreferrer";
-        contactLink.textContent = `واتساب صاحب البلاغ: ${report.contactPhone}`;
-        contactLink.setAttribute("aria-label", `راسل الشخص الذي عثر على الغرض على واتساب: ${report.contactPhone}`);
-        card.querySelector(".item-description").after(contactLink);
+      const deleteButton = card.querySelector(".delete-button");
+      deleteButton.textContent = report.deliveredAt ? "حذف" : "تم التسليم";
+      deleteButton.setAttribute(
+        "aria-label",
+        report.deliveredAt ? "حذف البلاغ الذي تم تسليمه" : "نقل البلاغ إلى تم التسليم"
+      );
+      if (report.deliveredAt) {
+        claimButton.hidden = true;
+      }
+      if (isFound) {
+        const notice = document.createElement("div");
+        notice.className = "notice-alert";
+        notice.setAttribute("role", "note");
+        notice.textContent = "ملحوظة: الأشياء المفقودة عند مدير المدرسة.";
+        card.querySelector(".item-description").after(notice);
       }
       claimButton.addEventListener("click", () => {
         const student = prompt("اكتب اسمك الكامل:");
@@ -647,7 +686,10 @@
         openWhatsApp(`مرحبًا أستاذ طه العزب، ${student.trim()} من فصل ${studentClass.trim()} يستفسر عن الغرض: ${report.name}.`);
         showToast("فتحنا واتساب برسالة جاهزة. اضغط إرسال لإتمام التواصل.");
       });
-      card.querySelector(".delete-button").addEventListener("click", () => openDeleteModal(report, card));
+      deleteButton.addEventListener("click", () => {
+        if (report.deliveredAt) openDeliveredDeleteModal(report, card);
+        else openDeleteModal(report, card);
+      });
       return card;
     }
 
@@ -669,6 +711,66 @@
       pendingDelete = null;
     }
 
+    function openDeliveredAuthModal() {
+      deliveredAuthForm.reset();
+      deliveredAuthModal.classList.add("open");
+      document.body.style.overflow = "hidden";
+      deliveredAdminPassword.focus();
+    }
+
+    function closeDeliveredAuthModal() {
+      deliveredAuthModal.classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    function openDeliveredDeleteModal(report, card) {
+      pendingDeliveredDelete = { report, card };
+      deliveredDeleteForm.reset();
+      document.getElementById("delivered-delete-report-name").textContent = `البلاغ: ${report.name}`;
+      deliveredDeleteModal.classList.add("open");
+      document.body.style.overflow = "hidden";
+      deliveredDeletePassword.focus();
+    }
+
+    function closeDeliveredDeleteModal() {
+      deliveredDeleteModal.classList.remove("open");
+      document.body.style.overflow = "";
+      pendingDeliveredDelete = null;
+    }
+
+    async function deleteDeliveredReport(event) {
+      event.preventDefault();
+      if (!pendingDeliveredDelete) return;
+      try {
+        const enteredHash = await hashOwnerPassword(
+          deliveredDeletePassword.value,
+          adminPasswordSalt,
+          passwordIterations
+        );
+        if (enteredHash !== adminPasswordHash) {
+          showToast("كلمة مرور المسؤول غير صحيحة؛ لم يتم حذف البلاغ.");
+          deliveredDeletePassword.focus();
+          return;
+        }
+        const { report, card } = pendingDeliveredDelete;
+        if (!confirm(`هل تريد حذف بلاغ «${report.name}» نهائيًا؟`)) return;
+        const savedReports = JSON.parse(localStorage.getItem(reportsStorageKey) || "[]");
+        if (!Array.isArray(savedReports)) throw new Error("Saved reports must be an array.");
+        const remainingReports = savedReports.filter(savedReport => savedReport.id !== report.id);
+        if (remainingReports.length === savedReports.length) {
+          throw new Error("The delivered report was not found in local storage.");
+        }
+        localStorage.setItem(reportsStorageKey, JSON.stringify(remainingReports));
+        card.remove();
+        closeDeliveredDeleteModal();
+        filterItems();
+        showToast("تم حذف البلاغ نهائيًا.");
+      } catch (error) {
+        console.error("تعذر حذف البلاغ الذي تم تسليمه:", error);
+        showToast("تعذر حذف البلاغ. حاول مرة أخرى.");
+      }
+    }
+
     async function deletePendingReport(isAdmin = false) {
       if (!pendingDelete) return;
       const { report, card } = pendingDelete;
@@ -676,13 +778,13 @@
         if (isAdmin) {
           const enteredHash = await hashOwnerPassword(adminPasswordField.value, adminPasswordSalt, passwordIterations);
           if (enteredHash !== adminPasswordHash) {
-            showToast("كلمة مرور المسؤول غير صحيحة؛ لم يتم حذف البلاغ.");
+            showToast("كلمة مرور المسؤول غير صحيحة؛ لم يتم نقل البلاغ.");
             return;
           }
         } else {
           if (!report.ownerCredential || typeof report.ownerCredential.salt !== "string" ||
               typeof report.ownerCredential.hash !== "string") {
-            showToast("هذا بلاغ قديم؛ استخدم خيار المسؤول لاستعادته.");
+            showToast("هذا بلاغ قديم؛ استخدم خيار المسؤول لنقله.");
             return;
           }
           if (!report.student ||
@@ -696,26 +798,34 @@
             report.ownerCredential.iterations
           );
           if (passwordHash !== report.ownerCredential.hash) {
-            showToast("كلمة المرور غير صحيحة؛ لم يتم حذف البلاغ.");
+            showToast("كلمة المرور غير صحيحة؛ لم يتم نقل البلاغ.");
             return;
           }
         }
 
-        if (!confirm(`هل تريد حذف بلاغ «${report.name}» نهائيًا من هذا الجهاز؟`)) return;
+        if (!confirm(`هل تريد نقل بلاغ «${report.name}» إلى صفحة تم التسليم؟`)) return;
         const savedReports = JSON.parse(localStorage.getItem(reportsStorageKey) || "[]");
         if (!Array.isArray(savedReports)) throw new Error("Saved reports must be an array.");
-        const remainingReports = savedReports.filter(savedReport => savedReport.id !== report.id);
-        if (remainingReports.length === savedReports.length) {
+        const savedReport = savedReports.find(item => item.id === report.id);
+        if (!savedReport) {
           throw new Error("The report was not found in local storage.");
         }
-        localStorage.setItem(reportsStorageKey, JSON.stringify(remainingReports));
-        card.remove();
+        savedReport.deliveredAt = Date.now();
+        localStorage.setItem(reportsStorageKey, JSON.stringify(savedReports));
+        report.deliveredAt = savedReport.deliveredAt;
+        card.dataset.delivered = "true";
+        const statusBadge = card.querySelector(".status");
+        statusBadge.textContent = "✓ تم التسليم";
+        statusBadge.classList.remove("missing");
+        statusBadge.classList.add("delivered");
+        card.querySelector(".claim-button").hidden = true;
+        card.querySelector(".delete-button").hidden = true;
         closeDeleteModal();
         filterItems();
-        showToast(isAdmin ? "حذف المسؤول البلاغ." : "تم حذف بلاغك.");
+        showToast("تم نقل البلاغ إلى صفحة تم التسليم.");
       } catch (error) {
-        console.error("تعذر حذف البلاغ:", error);
-        showToast("تعذر حذف البلاغ. حاول مرة أخرى.");
+        console.error("تعذر نقل البلاغ إلى صفحة تم التسليم:", error);
+        showToast("تعذر نقل البلاغ إلى صفحة تم التسليم. حاول مرة أخرى.");
       }
     }
 
@@ -754,6 +864,7 @@
           if (typeof report.id !== "string" || !report.id) {
             report.id = `${report.createdAt}-${index}`;
           }
+          delete report.contactPhone;
           grid.appendChild(createReportCard(report));
         });
         localStorage.setItem(reportsStorageKey, JSON.stringify(savedReports));
@@ -785,6 +896,39 @@
     deleteModal.addEventListener("click", event => {
       if (event.target === deleteModal) closeDeleteModal();
     });
+    document.getElementById("delivered-auth-close").addEventListener("click", closeDeliveredAuthModal);
+    deliveredAuthModal.addEventListener("click", event => {
+      if (event.target === deliveredAuthModal) closeDeliveredAuthModal();
+    });
+    document.getElementById("delivered-delete-close").addEventListener("click", closeDeliveredDeleteModal);
+    deliveredDeleteModal.addEventListener("click", event => {
+      if (event.target === deliveredDeleteModal) closeDeliveredDeleteModal();
+    });
+    deliveredDeleteForm.addEventListener("submit", deleteDeliveredReport);
+    deliveredAuthForm.addEventListener("submit", async event => {
+      event.preventDefault();
+      try {
+        const enteredHash = await hashOwnerPassword(
+          deliveredAdminPassword.value,
+          adminPasswordSalt,
+          passwordIterations
+        );
+        if (enteredHash !== adminPasswordHash) {
+          showToast("كلمة مرور المسؤول غير صحيحة.");
+          deliveredAdminPassword.focus();
+          return;
+        }
+        closeDeliveredAuthModal();
+        document.querySelector(".category-tab.active").classList.remove("active");
+        const deliveredTab = document.querySelector('.category-tab[data-filter="تم التسليم"]');
+        deliveredTab.classList.add("active");
+        activeCategory = "تم التسليم";
+        filterItems();
+      } catch (error) {
+        console.error("تعذر التحقق من كلمة مرور المسؤول:", error);
+        showToast("تعذر التحقق من كلمة المرور في هذا المتصفح.");
+      }
+    });
     document.getElementById("admin-recovery-toggle").addEventListener("click", () => {
       adminRecovery.hidden = !adminRecovery.hidden;
       if (!adminRecovery.hidden) adminPasswordField.focus();
@@ -799,13 +943,19 @@
     });
     document.addEventListener("keydown", event => {
       if (event.key === "Escape") {
-        if (deleteModal.classList.contains("open")) closeDeleteModal();
+        if (deliveredDeleteModal.classList.contains("open")) closeDeliveredDeleteModal();
+        else if (deliveredAuthModal.classList.contains("open")) closeDeliveredAuthModal();
+        else if (deleteModal.classList.contains("open")) closeDeleteModal();
         else if (modal.classList.contains("open")) closeModal();
       }
     });
 
     document.querySelectorAll(".category-tab").forEach(button => {
       button.addEventListener("click", () => {
+        if (button.dataset.filter === "تم التسليم") {
+          openDeliveredAuthModal();
+          return;
+        }
         document.querySelector(".category-tab.active").classList.remove("active");
         button.classList.add("active");
         activeCategory = button.dataset.filter;
@@ -813,7 +963,7 @@
       });
     });
     searchInput.addEventListener("input", filterItems);
-    reportTypeField.addEventListener("change", updateContactField);
+    reportTypeField.addEventListener("change", updateFoundNotice);
     reportImageInput.addEventListener("change", async () => {
       const file = reportImageInput.files[0];
       if (!file) {
@@ -833,7 +983,7 @@
         showToast(error.message || "تعذر تجهيز الصورة.");
       }
     });
-    updateContactField();
+    updateFoundNotice();
     function sortItems() {
       [...grid.querySelectorAll(".item-card")]
         .sort((a, b) => sortSelect.value === "newest" ? Number(b.dataset.age) - Number(a.dataset.age) : Number(a.dataset.age) - Number(b.dataset.age))
@@ -875,19 +1025,13 @@
         showToast(error.message || "تعذر تجهيز الصورة.");
         return;
       }
-      let contactPhone = "";
-      if (type === "معثور عليه") {
-        contactPhone = normalizePhoneNumber(reportContactInput.value);
-        reportContactInput.setCustomValidity(contactPhone ? "" : "اكتب رقم تواصل صحيحًا من ١٠ إلى ١٥ رقمًا.");
-        if (!reportForm.reportValidity()) return;
-      }
       try {
         const salt = crypto.getRandomValues(new Uint8Array(16));
         const saltHex = [...salt].map(byte => byte.toString(16).padStart(2, "0")).join("");
         const passwordHash = await hashOwnerPassword(ownerPassword, saltHex);
         const report = {
           id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`,
-          type, category, name, location, date, description, student, studentClass, contactPhone, photo,
+          type, category, name, location, date, description, student, studentClass, photo,
           ownerCredential: { salt: saltHex, hash: passwordHash, iterations: passwordIterations },
           createdAt: Date.now()
         };
@@ -899,6 +1043,7 @@
         grid.prepend(createReportCard(report));
         sortItems();
         reportForm.reset();
+        updateFoundNotice();
         reportImagePreview.hidden = true;
         reportImagePreview.removeAttribute("src");
         const today = new Date();
