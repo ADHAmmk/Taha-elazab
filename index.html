@@ -183,6 +183,11 @@
     .field input, .field select, .field textarea { width: 100%; min-height: 42px; padding: 10px 11px; border: 1px solid #e3e9e1; border-radius: 10px; outline: none; background: #fbfcfa; color: var(--ink); font-size: 12px; }
     .field input:focus, .field select:focus, .field textarea:focus { border-color: #86b5a1; box-shadow: 0 0 0 3px rgba(36,116,93,.08); }
     .field textarea { min-height: 75px; resize: vertical; }
+    .password-action { display: flex; gap: 7px; }
+    .password-action input { min-width: 0; flex: 1; }
+    .admin-recovery { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+    .admin-recovery[hidden] { display: none; }
+    .admin-recovery .field { margin-bottom: 11px; }
     .photo-preview { width: 110px; height: 90px; border: 1px solid var(--line); border-radius: 10px; object-fit: cover; }
     .photo-preview[hidden] { display: none; }
     .form-hint { margin: 13px 0; padding: 10px 12px; border-radius: 10px; color: #738076; background: #f3f6ef; font-size: 10px; line-height: 1.7; }
@@ -347,7 +352,7 @@
       <span>مع بعض، نخلي كل حاجة ترجع لصاحبها 💚</span>
       <span class="footer-contact"><span>بلاغات المفقودات · طه العزب</span><a href="https://wa.me/201034546880" target="_blank" rel="noopener noreferrer" dir="ltr" aria-label="راسل طه العزب على واتساب: 01034546880">واتساب: +20 103 454 6880</a></span>
     </div>
-    <div class="container security-note">صاحب البلاغ يحذفه بإدخال اسمه وكلمة المرور التي اختارها. بيانات البلاغ محفوظة على هذا الجهاز فقط؛ الحماية المحلية لا تستبدل خادمًا آمنًا.</div>
+    <div class="container security-note">صاحب البلاغ يحذفه بكلمة مروره، ويمكن للمسؤول استعادته عند نسيانها. البيانات محلية على هذا الجهاز، وكلمة مرور المسؤول داخل الصفحة ليست حماية خادم آمنة.</div>
   </footer>
 
   <div class="modal-backdrop" id="report-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
@@ -377,10 +382,39 @@
       </form>
     </div>
   </div>
+  <div class="modal-backdrop" id="delete-modal" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title">
+    <div class="modal">
+      <div class="modal-header">
+        <div><h2 id="delete-modal-title">حذف البلاغ</h2><p id="delete-report-name"></p></div>
+        <button class="close-button" id="delete-modal-close" type="button" aria-label="إغلاق">×</button>
+      </div>
+      <div class="field">
+        <label for="delete-owner-name">اسم صاحب البلاغ</label>
+        <input id="delete-owner-name" autocomplete="username" placeholder="اكتب الاسم المسجل في البلاغ">
+      </div>
+      <div class="field" style="margin-top:12px">
+        <label for="delete-owner-password">كلمة مرور البلاغ</label>
+        <div class="password-action">
+          <input id="delete-owner-password" type="password" autocomplete="current-password" placeholder="اكتب كلمة مرورك">
+          <button class="button button-light" id="admin-recovery-toggle" type="button">نسيت الكود؟ المسؤول</button>
+        </div>
+      </div>
+      <button class="button button-primary modal-submit" id="owner-delete-submit" type="button">حذف بلاغي</button>
+      <div class="admin-recovery" id="admin-recovery" hidden>
+        <div class="field">
+          <label for="admin-password">كلمة مرور المسؤول</label>
+          <input id="admin-password" type="password" autocomplete="off" placeholder="أدخل كلمة مرور المسؤول">
+        </div>
+        <button class="button button-light modal-submit" id="admin-delete-submit" type="button">تأكيد المسؤول وحذف البلاغ</button>
+      </div>
+      <div class="form-hint">إذا نسيت كلمة مرور البلاغ، استخدم خيار المسؤول. تأكيد المسؤول يسمح بحذف هذا البلاغ فقط.</div>
+    </div>
+  </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
     const modal = document.getElementById("report-modal");
+    const deleteModal = document.getElementById("delete-modal");
     const reportForm = document.getElementById("report-form");
     const toast = document.getElementById("toast");
     const grid = document.getElementById("items-grid");
@@ -393,6 +427,13 @@
     const reportsStorageKey = "luqta-school-reports";
     const passwordIterations = 120000;
     localStorage.removeItem("luqta-delete-password");
+    const adminPasswordSalt = "6c757174612d61646d696e2d73616c74";
+    const adminPasswordHash = "dfd1c4b38d4aebde2b30ae006b0359729ee58af47f453b4a89606d024e31cd27";
+    let pendingDelete = null;
+    const deleteOwnerName = document.getElementById("delete-owner-name");
+    const deleteOwnerPassword = document.getElementById("delete-owner-password");
+    const adminPasswordField = document.getElementById("admin-password");
+    const adminRecovery = document.getElementById("admin-recovery");
     const ownerPasswordField = document.getElementById("report-owner-password");
     const ownerPasswordConfirmField = document.getElementById("report-owner-password-confirm");
     const reportTypeField = document.getElementById("report-type");
@@ -561,45 +602,76 @@
         openWhatsApp(`مرحبًا أستاذ طه العزب، ${student.trim()} من فصل ${studentClass.trim()} يستفسر عن الغرض: ${report.name}.`);
         showToast("فتحنا واتساب برسالة جاهزة. اضغط إرسال لإتمام التواصل.");
       });
-      card.querySelector(".delete-button").addEventListener("click", async () => {
-        try {
-          if (!report.ownerCredential || typeof report.ownerCredential.salt !== "string" ||
-              typeof report.ownerCredential.hash !== "string") {
-            showToast("هذا بلاغ قديم لا يحتوي على كلمة مرور شخصية؛ تواصل مع المسؤول لحذفه.");
+      card.querySelector(".delete-button").addEventListener("click", () => openDeleteModal(report, card));
+      return card;
+    }
+
+    function openDeleteModal(report, card) {
+      pendingDelete = { report, card };
+      document.getElementById("delete-report-name").textContent = `البلاغ: ${report.name}`;
+      deleteOwnerName.value = "";
+      deleteOwnerPassword.value = "";
+      adminPasswordField.value = "";
+      adminRecovery.hidden = true;
+      deleteModal.classList.add("open");
+      document.body.style.overflow = "hidden";
+      deleteOwnerName.focus();
+    }
+
+    function closeDeleteModal() {
+      deleteModal.classList.remove("open");
+      document.body.style.overflow = "";
+      pendingDelete = null;
+    }
+
+    async function deletePendingReport(isAdmin = false) {
+      if (!pendingDelete) return;
+      const { report, card } = pendingDelete;
+      try {
+        if (isAdmin) {
+          const enteredHash = await hashOwnerPassword(adminPasswordField.value, adminPasswordSalt, passwordIterations);
+          if (enteredHash !== adminPasswordHash) {
+            showToast("كلمة مرور المسؤول غير صحيحة؛ لم يتم حذف البلاغ.");
             return;
           }
-
-          const student = prompt("اكتب الاسم الذي سجلت به البلاغ:");
-          if (student === null) return;
-          if (student.trim().toLocaleLowerCase("ar") !== report.student.trim().toLocaleLowerCase("ar")) {
+        } else {
+          if (!report.ownerCredential || typeof report.ownerCredential.salt !== "string" ||
+              typeof report.ownerCredential.hash !== "string") {
+            showToast("هذا بلاغ قديم؛ استخدم خيار المسؤول لاستعادته.");
+            return;
+          }
+          if (!report.student ||
+              deleteOwnerName.value.trim().toLocaleLowerCase("ar") !== report.student.trim().toLocaleLowerCase("ar")) {
             showToast("الاسم غير مطابق لصاحب البلاغ.");
             return;
           }
-          const password = prompt("اكتب كلمة المرور التي اخترتها لهذا البلاغ:");
-          if (password === null) return;
-          const passwordHash = await hashOwnerPassword(password, report.ownerCredential.salt, report.ownerCredential.iterations);
+          const passwordHash = await hashOwnerPassword(
+            deleteOwnerPassword.value,
+            report.ownerCredential.salt,
+            report.ownerCredential.iterations
+          );
           if (passwordHash !== report.ownerCredential.hash) {
             showToast("كلمة المرور غير صحيحة؛ لم يتم حذف البلاغ.");
             return;
           }
-          if (!confirm(`هل تريد حذف بلاغك «${report.name}» نهائيًا من هذا الجهاز؟`)) return;
-
-          const savedReports = JSON.parse(localStorage.getItem(reportsStorageKey) || "[]");
-          if (!Array.isArray(savedReports)) throw new Error("Saved reports must be an array.");
-          const remainingReports = savedReports.filter(savedReport => savedReport.id !== report.id);
-          if (remainingReports.length === savedReports.length) {
-            throw new Error("The report was not found in local storage.");
-          }
-          localStorage.setItem(reportsStorageKey, JSON.stringify(remainingReports));
-          card.remove();
-          filterItems();
-          showToast("تم حذف بلاغك من هذا الجهاز.");
-        } catch (error) {
-          console.error("تعذر حذف البلاغ:", error);
-          showToast("تعذر حذف البلاغ. حاول مرة أخرى.");
         }
-      });
-      return card;
+
+        if (!confirm(`هل تريد حذف بلاغ «${report.name}» نهائيًا من هذا الجهاز؟`)) return;
+        const savedReports = JSON.parse(localStorage.getItem(reportsStorageKey) || "[]");
+        if (!Array.isArray(savedReports)) throw new Error("Saved reports must be an array.");
+        const remainingReports = savedReports.filter(savedReport => savedReport.id !== report.id);
+        if (remainingReports.length === savedReports.length) {
+          throw new Error("The report was not found in local storage.");
+        }
+        localStorage.setItem(reportsStorageKey, JSON.stringify(remainingReports));
+        card.remove();
+        closeDeleteModal();
+        filterItems();
+        showToast(isAdmin ? "حذف المسؤول البلاغ." : "تم حذف بلاغك.");
+      } catch (error) {
+        console.error("تعذر حذف البلاغ:", error);
+        showToast("تعذر حذف البلاغ. حاول مرة أخرى.");
+      }
     }
 
     async function hashOwnerPassword(password, saltHex, iterations = passwordIterations) {
@@ -664,8 +736,27 @@
     modal.addEventListener("click", event => {
       if (event.target === modal) closeModal();
     });
+    document.getElementById("delete-modal-close").addEventListener("click", closeDeleteModal);
+    deleteModal.addEventListener("click", event => {
+      if (event.target === deleteModal) closeDeleteModal();
+    });
+    document.getElementById("admin-recovery-toggle").addEventListener("click", () => {
+      adminRecovery.hidden = !adminRecovery.hidden;
+      if (!adminRecovery.hidden) adminPasswordField.focus();
+    });
+    document.getElementById("owner-delete-submit").addEventListener("click", () => deletePendingReport());
+    document.getElementById("admin-delete-submit").addEventListener("click", () => deletePendingReport(true));
+    deleteOwnerPassword.addEventListener("keydown", event => {
+      if (event.key === "Enter") deletePendingReport();
+    });
+    adminPasswordField.addEventListener("keydown", event => {
+      if (event.key === "Enter") deletePendingReport(true);
+    });
     document.addEventListener("keydown", event => {
-      if (event.key === "Escape" && modal.classList.contains("open")) closeModal();
+      if (event.key === "Escape") {
+        if (deleteModal.classList.contains("open")) closeDeleteModal();
+        else if (modal.classList.contains("open")) closeModal();
+      }
     });
 
     document.querySelectorAll(".category-tab").forEach(button => {
