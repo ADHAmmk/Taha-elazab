@@ -152,6 +152,8 @@
     .item-actions { display: flex; align-items: center; gap: 6px; }
     .delete-button { padding: 8px 10px; border: 0; border-radius: 9px; color: #a34e46; background: #fbefed; font-size: 10px; font-weight: 600; }
     .delete-button:hover { color: white; background: #a34e46; }
+    .deliver-button { padding: 8px 10px; border: 0; border-radius: 9px; color: var(--green); background: #edf4ec; font-size: 10px; font-weight: 600; }
+    .deliver-button:hover { color: white; background: var(--green); }
     .restore-button { padding: 8px 10px; border: 0; border-radius: 9px; color: var(--green); background: #edf4ec; font-size: 10px; font-weight: 600; }
     .restore-button:hover { color: white; background: var(--green); }
     .empty-state { display: none; padding: 46px 20px; border: 1px dashed #cbd9ce; border-radius: 18px; color: var(--muted); background: rgba(255,255,255,.55); text-align: center; font-size: 13px; line-height: 1.8; }
@@ -199,11 +201,6 @@
     .field input, .field select, .field textarea { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid #e3e9e1; border-radius: 11px; outline: none; background: #fbfcfa; color: var(--ink); font-size: 12px; transition: border-color .18s, box-shadow .18s; }
     .field input:focus, .field select:focus, .field textarea:focus { border-color: #86b5a1; box-shadow: 0 0 0 3px rgba(36,116,93,.08); }
     .field textarea { min-height: 75px; resize: vertical; }
-    .password-action { display: flex; gap: 7px; }
-    .password-action input { min-width: 0; flex: 1; }
-    .admin-recovery { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
-    .admin-recovery[hidden] { display: none; }
-    .admin-recovery .field { margin-bottom: 11px; }
     .photo-preview { width: 110px; height: 90px; border: 1px solid var(--line); border-radius: 10px; object-fit: cover; }
     .photo-preview[hidden] { display: none; }
     .form-hint { margin: 13px 0; padding: 10px 12px; border-radius: 10px; color: #738076; background: #f3f6ef; font-size: 10px; line-height: 1.7; }
@@ -211,7 +208,7 @@
     .toast { position: fixed; z-index: 20; bottom: 22px; left: 50%; display: none; max-width: calc(100% - 30px); padding: 12px 18px; border-radius: 12px; color: white; background: #234e3f; box-shadow: var(--shadow); font-size: 13px; transform: translateX(-50%); }
     .toast.show { display: block; animation: appear .2s ease-out; }
     :focus-visible { outline: 3px solid rgba(36,116,93,.38); outline-offset: 3px; }
-    .button:focus-visible, .category-tab:focus-visible, .claim-button:focus-visible, .delete-button:focus-visible, .restore-button:focus-visible, .close-button:focus-visible { outline-offset: 3px; }
+    .button:focus-visible, .category-tab:focus-visible, .claim-button:focus-visible, .delete-button:focus-visible, .deliver-button:focus-visible, .restore-button:focus-visible, .close-button:focus-visible { outline-offset: 3px; }
 
     @media (max-width: 860px) {
       .hero-grid { gap: 25px; }
@@ -408,7 +405,7 @@
       </div>
       <p class="credits-wish">تمنياتنا لكم بالتفوق والنجاح دائمًا ✨</p>
     </section>
-    <div class="container security-note">صاحب البلاغ ينقله إلى صفحة تم التسليم بكلمة مروره، ويمكن للمسؤول نقله عند نسيانها. البيانات محلية على هذا الجهاز، وكلمة مرور المسؤول داخل الصفحة ليست حماية خادم آمنة.</div>
+    <div class="container security-note">تغيير حالة البلاغ وعرض صفحة تم التسليم متاحان للمسؤول فقط، ويمكن حذف البلاغ بكلمة مرور الطالب أو المسؤول. البيانات محلية على هذا الجهاز، وكلمة مرور المسؤول داخل الصفحة ليست حماية خادم آمنة.</div>
   </footer>
 
   <div class="modal-backdrop" id="report-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
@@ -429,10 +426,10 @@
           <div class="field"><label for="report-student">اسم الطالب/ة (مطلوب)</label><input id="report-student" required maxlength="50" placeholder="اكتب اسمك الكامل"></div>
           <div class="field"><label for="report-class">الفصل (مطلوب)</label><input id="report-class" required maxlength="20" placeholder="مثال: ٢/ب"></div>
           <div class="field full" id="report-found-notice" hidden><div class="notice-alert" role="note">ملحوظة: الأشياء المفقودة عند مدير المدرسة.</div></div>
-          <div class="field"><label for="report-owner-password">كلمة مرور لنقل بلاغك إلى تم التسليم (مطلوب)</label><input id="report-owner-password" type="password" required minlength="6" maxlength="100" autocomplete="new-password" placeholder="٦ أحرف على الأقل"></div>
+          <div class="field"><label for="report-owner-password">كلمة مرور الطالب لحذف البلاغ</label><input id="report-owner-password" type="password" required minlength="6" maxlength="100" autocomplete="new-password" placeholder="٦ أحرف على الأقل"></div>
           <div class="field"><label for="report-owner-password-confirm">تأكيد كلمة المرور</label><input id="report-owner-password-confirm" type="password" required minlength="6" maxlength="100" autocomplete="new-password" placeholder="اكتبها مرة أخرى"></div>
         </div>
-        <div class="form-hint">اختر كلمة مرور خاصة ببلاغك واحفظها؛ ستحتاج اسمك وكلمة المرور لنقل البلاغ إلى صفحة تم التسليم. لا تشارك كلمة المرور مع أي شخص.</div>
+        <div class="form-hint">احفظ كلمة المرور؛ ستحتاجها لحذف البلاغ. تغيير حالة التسليم متاح للمسؤول فقط.</div>
         <button class="button button-primary modal-submit" type="submit">إضافة البلاغ</button>
       </form>
     </div>
@@ -452,18 +449,26 @@
       </form>
     </div>
   </div>
-  <div class="modal-backdrop" id="delivered-delete-modal" role="dialog" aria-modal="true" aria-labelledby="delivered-delete-title">
+  <div class="modal-backdrop" id="report-delete-modal" role="dialog" aria-modal="true" aria-labelledby="report-delete-title">
     <div class="modal">
       <div class="modal-header">
-        <div><h2 id="delivered-delete-title">حذف بلاغ تم تسليمه</h2><p id="delivered-delete-report-name"></p></div>
-        <button class="close-button" id="delivered-delete-close" type="button" aria-label="إغلاق">×</button>
+        <div><h2 id="report-delete-title">حذف البلاغ</h2><p id="report-delete-name"></p></div>
+        <button class="close-button" id="report-delete-close" type="button" aria-label="إغلاق">×</button>
       </div>
-      <form id="delivered-delete-form">
+      <div class="field">
+        <label for="report-delete-owner-password">كلمة مرور الطالب</label>
+        <input id="report-delete-owner-password" type="password" autocomplete="current-password" placeholder="أدخل كلمة مرور البلاغ">
+      </div>
+      <div class="form-hint">أدخل كلمة مرور الطالب أو استخدم كلمة مرور المسؤول للحذف.</div>
+      <form id="report-delete-form">
         <div class="field">
-          <label for="delivered-delete-password">كلمة مرور المسؤول</label>
-          <input id="delivered-delete-password" type="password" autocomplete="current-password" required placeholder="أدخل كلمة مرور المسؤول">
+          <label for="report-delete-admin-password">كلمة مرور المسؤول</label>
+          <input id="report-delete-admin-password" type="password" autocomplete="current-password" placeholder="أدخل كلمة مرور المسؤول">
         </div>
-        <button class="button button-primary modal-submit" type="submit">تأكيد الحذف النهائي</button>
+        <div class="item-actions" style="margin-top:12px">
+          <button class="button button-light" id="delete-as-owner" type="button">حذف بكلمة مرور الطالب</button>
+          <button class="button button-primary" id="delete-as-admin" type="button">حذف بكلمة مرور المسؤول</button>
+        </div>
       </form>
     </div>
   </div>
@@ -496,25 +501,11 @@
         <button class="close-button" id="delete-modal-close" type="button" aria-label="إغلاق">×</button>
       </div>
       <div class="field">
-        <label for="delete-owner-name">اسم صاحب البلاغ</label>
-        <input id="delete-owner-name" autocomplete="username" placeholder="اكتب الاسم المسجل في البلاغ">
+        <label for="admin-password">كلمة مرور المسؤول</label>
+        <input id="admin-password" type="password" autocomplete="current-password" required placeholder="أدخل كلمة مرور المسؤول">
       </div>
-      <div class="field" style="margin-top:12px">
-        <label for="delete-owner-password">كلمة مرور البلاغ</label>
-        <div class="password-action">
-          <input id="delete-owner-password" type="password" autocomplete="current-password" placeholder="اكتب كلمة مرورك">
-          <button class="button button-light" id="admin-recovery-toggle" type="button">نسيت الكود؟ المسؤول</button>
-        </div>
-      </div>
-      <button class="button button-primary modal-submit" id="owner-delete-submit" type="button">نقل البلاغ إلى تم التسليم</button>
-      <div class="admin-recovery" id="admin-recovery" hidden>
-        <div class="field">
-          <label for="admin-password">كلمة مرور المسؤول</label>
-          <input id="admin-password" type="password" autocomplete="off" placeholder="أدخل كلمة مرور المسؤول">
-        </div>
-        <button class="button button-light modal-submit" id="admin-delete-submit" type="button">تأكيد المسؤول ونقل البلاغ</button>
-      </div>
-      <div class="form-hint">إذا نسيت كلمة مرور البلاغ، استخدم خيار المسؤول. بعد التأكيد سيظهر البلاغ في صفحة تم التسليم بعلامة صح.</div>
+      <button class="button button-primary modal-submit" id="admin-delete-submit" type="button">تأكيد تغيير الحالة</button>
+      <div class="form-hint">تغيير الحالة متاح للمسؤول فقط.</div>
     </div>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -525,9 +516,10 @@
     const deliveredAuthModal = document.getElementById("delivered-auth-modal");
     const deliveredAuthForm = document.getElementById("delivered-auth-form");
     const deliveredAdminPassword = document.getElementById("delivered-admin-password");
-    const deliveredDeleteModal = document.getElementById("delivered-delete-modal");
-    const deliveredDeleteForm = document.getElementById("delivered-delete-form");
-    const deliveredDeletePassword = document.getElementById("delivered-delete-password");
+    const reportDeleteModal = document.getElementById("report-delete-modal");
+    const reportDeleteForm = document.getElementById("report-delete-form");
+    const reportDeleteOwnerPassword = document.getElementById("report-delete-owner-password");
+    const reportDeleteAdminPassword = document.getElementById("report-delete-admin-password");
     const statusEditModal = document.getElementById("status-edit-modal");
     const statusEditForm = document.getElementById("status-edit-form");
     const statusEditType = document.getElementById("status-edit-type");
@@ -543,22 +535,35 @@
     const whatsappNumber = "201034546880";
     const reportsStorageKey = "luqta-school-reports";
     const passwordIterations = 120000;
-    localStorage.removeItem("luqta-delete-password");
-    const adminPasswordSalt = "6c757174612d61646d696e2d73616c74";
-    const adminPasswordHash = "a2f473db492dd1aab975efdeea3336c20318dccb3045fbaeebc48fd0d6bcb111";
+    const adminPasswordConfigKey = "luqta-school-admin-config";
+    async function getAdminPasswordConfig() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(adminPasswordConfigKey) || "null");
+        if (saved && saved.version === 2 && typeof saved.salt === "string" &&
+            typeof saved.hash === "string" && Number.isInteger(saved.iterations)) {
+          return saved;
+        }
+      } catch (error) {
+        console.warn("تعذر قراءة كلمة مرور المسؤول المحفوظة:", error);
+      }
+      const defaultPassword = "@@@@@@";
+      const salt = crypto.getRandomValues(new Uint8Array(16));
+      const saltHex = [...salt].map(byte => byte.toString(16).padStart(2, "0")).join("");
+      const hash = await hashPassword(defaultPassword, saltHex, passwordIterations);
+      const config = { version: 2, salt: saltHex, hash, iterations: passwordIterations };
+      localStorage.setItem(adminPasswordConfigKey, JSON.stringify(config));
+      return config;
+    }
     let pendingDelete = null;
-    let pendingDeliveredDelete = null;
+    let pendingReportDelete = null;
     let pendingStatusEdit = null;
-    const deleteOwnerName = document.getElementById("delete-owner-name");
-    const deleteOwnerPassword = document.getElementById("delete-owner-password");
     const adminPasswordField = document.getElementById("admin-password");
-    const adminRecovery = document.getElementById("admin-recovery");
-    const ownerPasswordField = document.getElementById("report-owner-password");
-    const ownerPasswordConfirmField = document.getElementById("report-owner-password-confirm");
     const reportTypeField = document.getElementById("report-type");
     const reportFoundNotice = document.getElementById("report-found-notice");
     const reportImageInput = document.getElementById("report-image");
     const reportImagePreview = document.getElementById("report-image-preview");
+    const ownerPasswordField = document.getElementById("report-owner-password");
+    const ownerPasswordConfirmField = document.getElementById("report-owner-password-confirm");
     const validateOwnerPasswordConfirmation = () => {
       ownerPasswordConfirmField.setCustomValidity(
         ownerPasswordConfirmField.value === ownerPasswordField.value ? "" : "كلمتا المرور غير متطابقتين."
@@ -566,7 +571,6 @@
     };
     ownerPasswordField.addEventListener("input", validateOwnerPasswordConfirmation);
     ownerPasswordConfirmField.addEventListener("input", validateOwnerPasswordConfirmation);
-
     function updateFoundNotice() {
       const found = reportTypeField.value === "معثور عليه";
       reportFoundNotice.hidden = !found;
@@ -664,6 +668,17 @@
       emptyState.style.display = visibleCount ? "none" : "block";
     }
 
+    function selectCategory(category) {
+      const activeTab = document.querySelector(".category-tab.active");
+      if (activeTab) activeTab.classList.remove("active");
+      const nextTab = [...document.querySelectorAll(".category-tab")]
+        .find(button => button.dataset.filter === category);
+      if (!nextTab) throw new Error(`Unknown category: ${category}`);
+      nextTab.classList.add("active");
+      activeCategory = category;
+      filterItems();
+    }
+
     function updateReportCardStatus(report, card) {
       const isFound = report.type === "معثور عليه";
       const delivered = Boolean(report.deliveredAt);
@@ -682,14 +697,13 @@
       claimButton.hidden = delivered;
 
       const deleteButton = card.querySelector(".delete-button");
+      const deliverButton = card.querySelector(".deliver-button");
       const restoreButton = card.querySelector(".restore-button");
-      const pendingDeleteLabel = report.type === "مفقود" ? "لم يتم التسليم" : "تم التسليم";
-      deleteButton.textContent = delivered ? "حذف" : pendingDeleteLabel;
+      deleteButton.textContent = "حذف";
       deleteButton.hidden = false;
-      deleteButton.setAttribute(
-        "aria-label",
-        delivered ? "حذف البلاغ الذي تم تسليمه" : `تغيير حالة البلاغ: ${pendingDeleteLabel}`
-      );
+      deleteButton.setAttribute("aria-label", "حذف البلاغ");
+      deliverButton.hidden = delivered;
+      restoreButton.textContent = "لم يتم التسليم";
       restoreButton.hidden = !delivered;
 
       const existingNotice = card.querySelector(".notice-alert");
@@ -720,7 +734,7 @@
       card.dataset.delivered = String(Boolean(report.deliveredAt));
       card.dataset.age = String(report.createdAt);
       card.dataset.search = `${report.category} ${report.name} ${report.location} ${report.description}`.toLocaleLowerCase("ar");
-      card.innerHTML = `<div class="item-image ${visualClass}"><button class="status" type="button"></button><img class="item-photo" alt="" loading="lazy"></div><div class="item-body"><div class="item-topline"><h3 class="item-title"></h3><span class="item-category"></span></div><p class="item-description"></p><div class="item-meta"><span class="item-location"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s7-4.4 7-11a7 7 0 1 0-14 0c0 6.6 7 11 7 11Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2" stroke="currentColor" stroke-width="1.8"/></svg></span><div class="item-actions"><button class="claim-button" type="button"></button><button class="restore-button" type="button">إعادة للمفقودات</button><button class="delete-button" type="button"></button></div></div></div>`;
+      card.innerHTML = `<div class="item-image ${visualClass}"><button class="status" type="button"></button><img class="item-photo" alt="" loading="lazy"></div><div class="item-body"><div class="item-topline"><h3 class="item-title"></h3><span class="item-category"></span></div><p class="item-description"></p><div class="item-meta"><span class="item-location"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s7-4.4 7-11a7 7 0 1 0-14 0c0 6.6 7 11 7 11Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2" stroke="currentColor" stroke-width="1.8"/></svg></span><div class="item-actions"><button class="claim-button" type="button"></button><button class="deliver-button" type="button">تم التسليم</button><button class="restore-button" type="button">لم يتم التسليم</button><button class="delete-button" type="button">حذف</button></div></div></div>`;
       const itemPhoto = card.querySelector(".item-photo");
       itemPhoto.src = report.photo || defaultItemIllustration(report.category);
       itemPhoto.alt = report.photo ? `صورة ${report.name}` : `رسم توضيحي لتصنيف ${report.category}`;
@@ -736,6 +750,7 @@
       const statusBadge = card.querySelector(".status");
       const claimButton = card.querySelector(".claim-button");
       const deleteButton = card.querySelector(".delete-button");
+      const deliverButton = card.querySelector(".deliver-button");
       const restoreButton = card.querySelector(".restore-button");
       statusBadge.addEventListener("click", () => openStatusEditModal(report, card));
       claimButton.addEventListener("click", () => {
@@ -746,29 +761,23 @@
         openWhatsApp(`مرحبًا أستاذ طه العزب، ${student.trim()} من فصل ${studentClass.trim()} يستفسر عن الغرض: ${report.name}.`);
         showToast("فتحنا واتساب برسالة جاهزة. اضغط إرسال لإتمام التواصل.");
       });
-      deleteButton.addEventListener("click", () => {
-        if (report.deliveredAt) openDeliveredDeleteModal(report, card);
-        else openDeleteModal(report, card);
-      });
-      restoreButton.addEventListener("click", () => openStatusEditModal(report, card, true));
+      deleteButton.addEventListener("click", () => openReportDeleteModal(report, card));
+      deliverButton.addEventListener("click", () => openDeleteModal(report, card, true));
+      restoreButton.addEventListener("click", () => openDeleteModal(report, card, false));
       return card;
     }
 
-    function openStatusEditModal(report, card, restoreToMissing = false) {
-      pendingStatusEdit = { report, card, restoreToMissing };
+    function openStatusEditModal(report, card) {
+      pendingStatusEdit = { report, card };
       statusEditForm.reset();
-      statusEditType.value = restoreToMissing ? "مفقود" : report.type;
-      statusEditType.parentElement.hidden = restoreToMissing;
-      document.getElementById("status-edit-title").textContent = restoreToMissing
-        ? "إعادة البلاغ للمفقودات"
-        : "تعديل حالة البلاغ";
-      document.getElementById("status-edit-submit").textContent = restoreToMissing
-        ? "تأكيد الإعادة"
-        : "حفظ الحالة";
+      statusEditType.value = report.type;
+      statusEditType.parentElement.hidden = false;
+      document.getElementById("status-edit-title").textContent = "تعديل حالة البلاغ";
+      document.getElementById("status-edit-submit").textContent = "حفظ الحالة";
       document.getElementById("status-edit-report-name").textContent = `البلاغ: ${report.name}`;
       statusEditModal.classList.add("open");
       document.body.style.overflow = "hidden";
-      (restoreToMissing ? statusEditPassword : statusEditType).focus();
+      statusEditType.focus();
     }
 
     function closeStatusEditModal() {
@@ -781,19 +790,20 @@
       event.preventDefault();
       if (!pendingStatusEdit) return;
       try {
-        const enteredHash = await hashOwnerPassword(
+        const adminConfig = await getAdminPasswordConfig();
+        const enteredHash = await hashPassword(
           statusEditPassword.value,
-          adminPasswordSalt,
-          passwordIterations
+          adminConfig.salt,
+          adminConfig.iterations
         );
-        if (enteredHash !== adminPasswordHash) {
+        if (enteredHash !== adminConfig.hash) {
           showToast("كلمة مرور المسؤول غير صحيحة؛ لم يتم تعديل الحالة.");
           statusEditPassword.focus();
           return;
         }
 
-        const { report, card, restoreToMissing } = pendingStatusEdit;
-        const nextType = restoreToMissing ? "مفقود" : statusEditType.value;
+        const { report, card } = pendingStatusEdit;
+        const nextType = statusEditType.value;
         if (!["مفقود", "معثور عليه"].includes(nextType)) {
           throw new Error("Invalid report status.");
         }
@@ -801,13 +811,11 @@
         if (!Array.isArray(savedReports)) throw new Error("Saved reports must be an array.");
         const savedReport = savedReports.find(item => item.id === report.id);
         if (!savedReport) throw new Error("The report was not found in local storage.");
-        if (report.type === nextType && !report.deliveredAt) {
+        if (report.type === nextType) {
           closeStatusEditModal();
           return;
         }
-        const confirmMessage = restoreToMissing
-          ? `هل تريد إعادة بلاغ «${report.name}» إلى قائمة المفقودات؟`
-          : `هل تريد تغيير حالة بلاغ «${report.name}» إلى «${nextType === "مفقود" ? "مفقود" : "تم العثور عليه"}»؟`;
+        const confirmMessage = `هل تريد تغيير حالة بلاغ «${report.name}» إلى «${nextType === "مفقود" ? "مفقود" : "تم العثور عليه"}»؟`;
         if (!confirm(confirmMessage)) return;
 
         savedReport.type = nextType;
@@ -818,25 +826,27 @@
         updateReportCardStatus(report, card);
         closeStatusEditModal();
         filterItems();
-        showToast(restoreToMissing
-          ? "تمت إعادة البلاغ إلى قائمة المفقودات."
-          : `تم تغيير حالة البلاغ إلى «${nextType === "مفقود" ? "مفقود" : "تم العثور عليه"}».`);
+        showToast(`تم تغيير حالة البلاغ إلى «${nextType === "مفقود" ? "مفقود" : "تم العثور عليه"}».`);
       } catch (error) {
         console.error("تعذر تعديل حالة البلاغ:", error);
         showToast("تعذر تعديل حالة البلاغ. حاول مرة أخرى.");
       }
     }
 
-    function openDeleteModal(report, card) {
-      pendingDelete = { report, card };
+    function openDeleteModal(report, card, nextDelivered) {
+      pendingDelete = { report, card, nextDelivered };
+      document.getElementById("delete-modal-title").textContent = nextDelivered
+        ? "نقل البلاغ إلى تم التسليم"
+        : "إعادة البلاغ إلى لم يتم التسليم";
       document.getElementById("delete-report-name").textContent = `البلاغ: ${report.name}`;
-      deleteOwnerName.value = "";
-      deleteOwnerPassword.value = "";
       adminPasswordField.value = "";
-      adminRecovery.hidden = true;
+      adminPasswordField.required = true;
+      document.getElementById("admin-delete-submit").textContent = nextDelivered
+        ? "تأكيد تم التسليم"
+        : "تأكيد لم يتم التسليم";
       deleteModal.classList.add("open");
       document.body.style.overflow = "hidden";
-      deleteOwnerName.focus();
+      adminPasswordField.focus();
     }
 
     function closeDeleteModal() {
@@ -857,90 +867,100 @@
       document.body.style.overflow = "";
     }
 
-    function openDeliveredDeleteModal(report, card) {
-      pendingDeliveredDelete = { report, card };
-      deliveredDeleteForm.reset();
-      document.getElementById("delivered-delete-report-name").textContent = `البلاغ: ${report.name}`;
-      deliveredDeleteModal.classList.add("open");
+    function openReportDeleteModal(report, card) {
+      pendingReportDelete = { report, card };
+      reportDeleteForm.reset();
+      reportDeleteOwnerPassword.value = "";
+      document.getElementById("report-delete-name").textContent = `البلاغ: ${report.name}`;
+      const credential = report.ownerCredential;
+      const ownerCanDelete = Boolean(
+        credential && typeof credential.salt === "string" &&
+        typeof credential.hash === "string" && Number.isInteger(credential.iterations)
+      );
+      reportDeleteOwnerPassword.disabled = !ownerCanDelete;
+      reportDeleteOwnerPassword.placeholder = ownerCanDelete
+        ? "أدخل كلمة مرور البلاغ"
+        : "غير متاحة لهذا البلاغ القديم؛ استخدم كلمة مرور المسؤول";
+      document.getElementById("delete-as-owner").disabled = !ownerCanDelete;
+      reportDeleteModal.classList.add("open");
       document.body.style.overflow = "hidden";
-      deliveredDeletePassword.focus();
+      (ownerCanDelete ? reportDeleteOwnerPassword : reportDeleteAdminPassword).focus();
     }
 
-    function closeDeliveredDeleteModal() {
-      deliveredDeleteModal.classList.remove("open");
+    function closeReportDeleteModal() {
+      reportDeleteModal.classList.remove("open");
       document.body.style.overflow = "";
-      pendingDeliveredDelete = null;
+      pendingReportDelete = null;
     }
 
-    async function deleteDeliveredReport(event) {
-      event.preventDefault();
-      if (!pendingDeliveredDelete) return;
+    async function deleteReport(isAdmin) {
+      if (!pendingReportDelete) return;
+      const { report, card } = pendingReportDelete;
       try {
-        const enteredHash = await hashOwnerPassword(
-          deliveredDeletePassword.value,
-          adminPasswordSalt,
-          passwordIterations
-        );
-        if (enteredHash !== adminPasswordHash) {
-          showToast("كلمة مرور المسؤول غير صحيحة؛ لم يتم حذف البلاغ.");
-          deliveredDeletePassword.focus();
-          return;
+        if (isAdmin) {
+          const adminConfig = await getAdminPasswordConfig();
+          const enteredHash = await hashPassword(
+            reportDeleteAdminPassword.value,
+            adminConfig.salt,
+            adminConfig.iterations
+          );
+          if (enteredHash !== adminConfig.hash) {
+            showToast("كلمة مرور المسؤول غير صحيحة؛ لم يتم حذف البلاغ.");
+            reportDeleteAdminPassword.focus();
+            return;
+          }
+        } else {
+          const credential = report.ownerCredential;
+          if (!credential || typeof credential.salt !== "string" ||
+              typeof credential.hash !== "string" || !Number.isInteger(credential.iterations)) {
+            showToast("لا تتوفر كلمة مرور طالب لهذا البلاغ؛ استخدم كلمة مرور المسؤول.");
+            reportDeleteAdminPassword.focus();
+            return;
+          }
+          const enteredHash = await hashPassword(
+            reportDeleteOwnerPassword.value,
+            credential.salt,
+            credential.iterations
+          );
+          if (enteredHash !== credential.hash) {
+            showToast("كلمة مرور الطالب غير صحيحة؛ لم يتم حذف البلاغ.");
+            reportDeleteOwnerPassword.focus();
+            return;
+          }
         }
-        const { report, card } = pendingDeliveredDelete;
         if (!confirm(`هل تريد حذف بلاغ «${report.name}» نهائيًا؟`)) return;
         const savedReports = JSON.parse(localStorage.getItem(reportsStorageKey) || "[]");
         if (!Array.isArray(savedReports)) throw new Error("Saved reports must be an array.");
         const remainingReports = savedReports.filter(savedReport => savedReport.id !== report.id);
         if (remainingReports.length === savedReports.length) {
-          throw new Error("The delivered report was not found in local storage.");
+          throw new Error("The report was not found in local storage.");
         }
         localStorage.setItem(reportsStorageKey, JSON.stringify(remainingReports));
         card.remove();
-        closeDeliveredDeleteModal();
+        closeReportDeleteModal();
         filterItems();
         showToast("تم حذف البلاغ نهائيًا.");
       } catch (error) {
-        console.error("تعذر حذف البلاغ الذي تم تسليمه:", error);
+        console.error("تعذر حذف البلاغ:", error);
         showToast("تعذر حذف البلاغ. حاول مرة أخرى.");
       }
     }
 
-    async function deletePendingReport(isAdmin = false) {
+    async function deletePendingReport() {
       if (!pendingDelete) return;
-      const { report, card } = pendingDelete;
+      const { report, card, nextDelivered } = pendingDelete;
       try {
-        if (isAdmin) {
-          const enteredHash = await hashOwnerPassword(adminPasswordField.value, adminPasswordSalt, passwordIterations);
-          if (enteredHash !== adminPasswordHash) {
-            showToast("كلمة مرور المسؤول غير صحيحة؛ لم يتم نقل البلاغ.");
-            return;
-          }
-        } else {
-          if (!report.ownerCredential || typeof report.ownerCredential.salt !== "string" ||
-              typeof report.ownerCredential.hash !== "string") {
-            showToast("هذا بلاغ قديم؛ استخدم خيار المسؤول لنقله.");
-            return;
-          }
-          if (!report.student ||
-              deleteOwnerName.value.trim().toLocaleLowerCase("ar") !== report.student.trim().toLocaleLowerCase("ar")) {
-            showToast("الاسم غير مطابق لصاحب البلاغ.");
-            return;
-          }
-          const passwordHash = await hashOwnerPassword(
-            deleteOwnerPassword.value,
-            report.ownerCredential.salt,
-            report.ownerCredential.iterations
-          );
-          if (passwordHash !== report.ownerCredential.hash) {
-            showToast("كلمة المرور غير صحيحة؛ لم يتم نقل البلاغ.");
-            return;
-          }
+        const adminConfig = await getAdminPasswordConfig();
+        const enteredHash = await hashPassword(adminPasswordField.value, adminConfig.salt, adminConfig.iterations);
+        if (enteredHash !== adminConfig.hash) {
+          showToast("كلمة مرور المسؤول غير صحيحة؛ لم يتم تغيير الحالة.");
+          adminPasswordField.focus();
+          return;
         }
 
-        const targetStatusText = report.type === "مفقود" ? "تم التسليم" : "لم يتم التسليم";
-        const confirmMessage = report.type === "مفقود"
+        const confirmMessage = nextDelivered
           ? `هل تريد نقل بلاغ «${report.name}» إلى صفحة تم التسليم؟`
-          : `هل تريد إعادة بلاغ «${report.name}» إلى صفحة المفقودات؟`;
+          : `هل تريد إعادة بلاغ «${report.name}» إلى صفحة لم يتم التسليم؟`;
         if (!confirm(confirmMessage)) return;
         const savedReports = JSON.parse(localStorage.getItem(reportsStorageKey) || "[]");
         if (!Array.isArray(savedReports)) throw new Error("Saved reports must be an array.");
@@ -948,8 +968,7 @@
         if (!savedReport) {
           throw new Error("The report was not found in local storage.");
         }
-        const wasDelivered = Boolean(report.deliveredAt);
-        if (report.type === "مفقود") {
+        if (nextDelivered) {
           savedReport.deliveredAt = Date.now();
           report.deliveredAt = savedReport.deliveredAt;
         } else {
@@ -957,27 +976,19 @@
           delete report.deliveredAt;
         }
         localStorage.setItem(reportsStorageKey, JSON.stringify(savedReports));
-        card.dataset.delivered = String(Boolean(report.deliveredAt));
-        const statusBadge = card.querySelector(".status");
-        const nextStatusText = report.deliveredAt ? "✓ تم التسليم" : report.type === "معثور عليه" ? "تم العثور عليه" : "مفقود";
-        statusBadge.textContent = nextStatusText;
-        statusBadge.classList.toggle("missing", !report.deliveredAt && report.type !== "معثور عليه");
-        statusBadge.classList.toggle("delivered", Boolean(report.deliveredAt));
-        card.querySelector(".claim-button").hidden = Boolean(report.deliveredAt);
-        card.querySelector(".delete-button").hidden = false;
-        const deleteButton = card.querySelector(".delete-button");
-        deleteButton.textContent = report.deliveredAt ? "حذف" : (report.type === "مفقود" ? "لم يتم التسليم" : "تم التسليم");
-        deleteButton.setAttribute("aria-label", report.deliveredAt ? "حذف البلاغ الذي تم تسليمه" : `تغيير حالة البلاغ: ${report.type === "مفقود" ? "لم يتم التسليم" : "تم التسليم"}`);
+        updateReportCardStatus(report, card);
         closeDeleteModal();
-        filterItems();
-        showToast(report.deliveredAt ? "تم نقل البلاغ إلى صفحة تم التسليم." : "تمت إعادة البلاغ إلى صفحة المفقودات.");
+        selectCategory(nextDelivered ? "تم التسليم" : "الكل");
+        showToast(nextDelivered
+          ? "تم نقل البلاغ إلى صفحة تم التسليم."
+          : "تمت إعادة البلاغ إلى صفحة لم يتم التسليم.");
       } catch (error) {
-        console.error("تعذر نقل البلاغ إلى صفحة تم التسليم:", error);
-        showToast("تعذر نقل البلاغ إلى صفحة تم التسليم. حاول مرة أخرى.");
+        console.error("تعذر تغيير حالة تسليم البلاغ:", error);
+        showToast("تعذر تغيير حالة التسليم. حاول مرة أخرى.");
       }
     }
 
-    async function hashOwnerPassword(password, saltHex, iterations = passwordIterations) {
+    async function hashPassword(password, saltHex, iterations = passwordIterations) {
       if (!crypto.subtle) throw new Error("Secure password hashing is unavailable in this browser.");
       const salt = Uint8Array.from(saltHex.match(/.{2}/g) || [], byte => parseInt(byte, 16));
       if (salt.length !== 16 || !Number.isInteger(iterations) || iterations < 100000) {
@@ -1044,60 +1055,51 @@
     deleteModal.addEventListener("click", event => {
       if (event.target === deleteModal) closeDeleteModal();
     });
+    document.getElementById("report-delete-close").addEventListener("click", closeReportDeleteModal);
+    reportDeleteModal.addEventListener("click", event => {
+      if (event.target === reportDeleteModal) closeReportDeleteModal();
+    });
     document.getElementById("delivered-auth-close").addEventListener("click", closeDeliveredAuthModal);
     deliveredAuthModal.addEventListener("click", event => {
       if (event.target === deliveredAuthModal) closeDeliveredAuthModal();
-    });
-    document.getElementById("delivered-delete-close").addEventListener("click", closeDeliveredDeleteModal);
-    deliveredDeleteModal.addEventListener("click", event => {
-      if (event.target === deliveredDeleteModal) closeDeliveredDeleteModal();
     });
     document.getElementById("status-edit-close").addEventListener("click", closeStatusEditModal);
     statusEditModal.addEventListener("click", event => {
       if (event.target === statusEditModal) closeStatusEditModal();
     });
     statusEditForm.addEventListener("submit", changeReportStatus);
-    deliveredDeleteForm.addEventListener("submit", deleteDeliveredReport);
+    reportDeleteForm.addEventListener("submit", event => event.preventDefault());
+    document.getElementById("delete-as-owner").addEventListener("click", () => deleteReport(false));
+    document.getElementById("delete-as-admin").addEventListener("click", () => deleteReport(true));
     deliveredAuthForm.addEventListener("submit", async event => {
       event.preventDefault();
       try {
-        const enteredHash = await hashOwnerPassword(
+        const adminConfig = await getAdminPasswordConfig();
+        const enteredHash = await hashPassword(
           deliveredAdminPassword.value,
-          adminPasswordSalt,
-          passwordIterations
+          adminConfig.salt,
+          adminConfig.iterations
         );
-        if (enteredHash !== adminPasswordHash) {
+        if (enteredHash !== adminConfig.hash) {
           showToast("كلمة مرور المسؤول غير صحيحة.");
           deliveredAdminPassword.focus();
           return;
         }
         closeDeliveredAuthModal();
-        document.querySelector(".category-tab.active").classList.remove("active");
-        const deliveredTab = document.querySelector('.category-tab[data-filter="تم التسليم"]');
-        deliveredTab.classList.add("active");
-        activeCategory = "تم التسليم";
-        filterItems();
+        selectCategory("تم التسليم");
       } catch (error) {
         console.error("تعذر التحقق من كلمة مرور المسؤول:", error);
         showToast("تعذر التحقق من كلمة المرور في هذا المتصفح.");
       }
     });
-    document.getElementById("admin-recovery-toggle").addEventListener("click", () => {
-      adminRecovery.hidden = !adminRecovery.hidden;
-      if (!adminRecovery.hidden) adminPasswordField.focus();
-    });
-    document.getElementById("owner-delete-submit").addEventListener("click", () => deletePendingReport());
-    document.getElementById("admin-delete-submit").addEventListener("click", () => deletePendingReport(true));
-    deleteOwnerPassword.addEventListener("keydown", event => {
-      if (event.key === "Enter") deletePendingReport();
-    });
+    document.getElementById("admin-delete-submit").addEventListener("click", deletePendingReport);
     adminPasswordField.addEventListener("keydown", event => {
-      if (event.key === "Enter") deletePendingReport(true);
+      if (event.key === "Enter") deletePendingReport();
     });
     document.addEventListener("keydown", event => {
       if (event.key === "Escape") {
         if (statusEditModal.classList.contains("open")) closeStatusEditModal();
-        else if (deliveredDeleteModal.classList.contains("open")) closeDeliveredDeleteModal();
+        else if (reportDeleteModal.classList.contains("open")) closeReportDeleteModal();
         else if (deliveredAuthModal.classList.contains("open")) closeDeliveredAuthModal();
         else if (deleteModal.classList.contains("open")) closeDeleteModal();
         else if (modal.classList.contains("open")) closeModal();
@@ -1145,15 +1147,6 @@
     }
     sortSelect.addEventListener("change", sortItems);
 
-    document.querySelectorAll(".claim-button").forEach(button => {
-      button.addEventListener("click", () => {
-        let saw = prompt("اسمك:")
-        let sa= prompt("الفصل:")
-        openWhatsApp(`مرحبًا أستاذ طه العزب، أود الاستفسار عن الغرض: ${button.dataset.item}.  الاسم:${saw} الفصل: ${sa}`);
-        showToast("فتحنا واتساب برسالة جاهزة. اضغط إرسال لإتمام التواصل.");
-      });
-    });
-
     reportForm.addEventListener("submit", async event => {
       event.preventDefault();
       const studentField = document.getElementById("report-student");
@@ -1182,11 +1175,11 @@
       try {
         const salt = crypto.getRandomValues(new Uint8Array(16));
         const saltHex = [...salt].map(byte => byte.toString(16).padStart(2, "0")).join("");
-        const passwordHash = await hashOwnerPassword(ownerPassword, saltHex);
+        const ownerHash = await hashPassword(ownerPassword, saltHex);
         const report = {
           id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`,
           type, category, name, location, date, description, student, studentClass, photo,
-          ownerCredential: { salt: saltHex, hash: passwordHash, iterations: passwordIterations },
+          ownerCredential: { salt: saltHex, hash: ownerHash, iterations: passwordIterations },
           createdAt: Date.now()
         };
         const saved = saveReport(report);
@@ -1197,6 +1190,7 @@
         grid.prepend(createReportCard(report));
         sortItems();
         reportForm.reset();
+        validateOwnerPasswordConfirmation();
         updateFoundNotice();
         reportImagePreview.hidden = true;
         reportImagePreview.removeAttribute("src");
@@ -1206,8 +1200,8 @@
         filterItems();
         showToast("تمت إضافة البلاغ وحفظه على هذا الجهاز فقط.");
       } catch (error) {
-        console.error("تعذر إعداد كلمة مرور البلاغ:", error);
-        showToast("تعذر تأمين كلمة المرور في هذا المتصفح. لم يتم إرسال البلاغ.");
+        console.error("تعذر إعداد كلمة مرور حذف البلاغ أو حفظه:", error);
+        showToast("تعذر تأمين كلمة المرور أو حفظ البلاغ.");
       }
     });
 
