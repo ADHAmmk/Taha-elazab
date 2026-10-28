@@ -210,9 +210,7 @@
     :focus-visible { outline: 3px solid rgba(36,116,93,.38); outline-offset: 3px; }
     .button:focus-visible, .category-tab:focus-visible, .claim-button:focus-visible, .delete-button:focus-visible, .deliver-button:focus-visible, .restore-button:focus-visible, .close-button:focus-visible { outline-offset: 3px; }
 
-    .credit-name{
-      color: #a96234;
-    }
+    .credit-name{color: #e1efb0;}
     @media (max-width: 860px) {
       .hero-grid { gap: 25px; }
       .hero { padding-top: 58px; }
@@ -320,7 +318,7 @@
           <h1 class="hero-school-title"><em>الثانويه بنين باداره السنبلاوين</em></h1>
           <p class="hero-copy">منصة مجتمعية إلكترونية تتيح للطلاب الإبلاغ عن الأشياء المفقودة أو التي عُثر عليها، مثل</p>
           <p class="hero-copy">الهواتف والمحافظ والبطاقات والمفاتيح والأوراق والمقتنيات الشخصية، مع تصنيف البلاغات</p>
-           <p class="hero-copy">حسب المكان والتاريخ ونوع المفقود.</p>
+           <p class="hero-copy">{إِنَّ اللَّهَ يَأْمُرُكُمْ أَن تُؤَدُّوا الْأَمَانَاتِ إِلَىٰ أَهْلِهَا وَإِذَا حَكَمْتُم بَيْنَ النَّاسِ أَن تَحْكُمُوا بِالْعَدْلِ ۚ إِنَّ اللَّهَ نِعِمَّا يَعِظُكُم بِهِ ۗ إِنَّ اللَّهَ كَانَ سَمِيعًا بَصِيرًا}</p>
           <div class="hero-buttons">
             <button class="button button-primary open-report" type="button">أبلغ عن غرض مفقود <span>←</span></button>
             <a class="button button-light" href="#items">تصفّح المعروضات</a>
@@ -340,7 +338,7 @@
               <svg viewBox="0 0 120 140" fill="none" aria-hidden="true"><path d="M37 34V25c0-13 10-21 23-21s23 8 23 21v9" stroke="#657448" stroke-width="8" stroke-linecap="round"/><path d="M23 36c0-7 6-13 13-13h48c7 0 13 6 13 13l7 82c1 9-6 16-15 16H31c-9 0-16-7-15-16l7-82Z" fill="#8B9B62"/><path d="M26 41c0-4 4-8 8-8h52c4 0 8 4 8 8l5 68c1 6-4 11-10 11H31c-6 0-11-5-10-11l5-68Z" fill="#A7B681"/><path d="M39 63c0-5 4-9 9-9h26c5 0 9 4 9 9v24c0 5-4 9-9 9H48c-5 0-9-4-9-9V63Z" fill="#71804F"/><path d="M45 68h32" stroke="#C9D3AA" stroke-width="3" stroke-linecap="round"/><path d="M39 118v8M81 118v8" stroke="#596745" stroke-width="6" stroke-linecap="round"/></svg>
             </div>
             <h3>أضف بلاغك</h3>
-            <p>اكتب تفاصيل الغرض وأضف البلاغ. ستظهر ملاحظة ثابتة على بلاغات الأغراض المعثور عليها.</p>
+            <p>اكتب تفاصيل الغرض وأضف البلاغ. ستظهر ملاحظة ثابتة على جميع البلاغات.</p>
           </article>
           <div class="float-note note-two"><span class="float-icon">🤝</span><span><strong>بأمان وخصوصية</strong><small>التواصل عن طريق إدارة المدرسة</small></span></div>
         </div>
@@ -405,8 +403,8 @@
       <div class="credit-item">
         <span class="credit-label">البرمجة والتطوير: </span>
         <span class="credit-name"><b>م/ أدهم محمد إبراهيم</b></span>
-        <span class="credit-label">فكرة :</span>
-        <span class="credit-name">الطالب/ طه عمرو طه</span>
+        
+        <span class="credit-name">م/ طه عمرو طه</span>
       </div>
       <p class="credits-wish">تمنياتنا لكم بالتفوق والنجاح دائمًا ✨</p>
     </section>
@@ -430,7 +428,7 @@
           <div class="field full"><label for="report-image">صورة الغرض (اختياري)</label><input id="report-image" type="file" accept="image/jpeg,image/png,image/webp,image/gif"><img class="photo-preview" id="report-image-preview" alt="معاينة صورة الغرض" hidden><small class="section-subtitle">ارفع صورة واضحة للغرض؛ لو ما رفعتش صورة هنعرض رسمة مناسبة لتصنيفه.</small></div>
           <div class="field"><label for="report-student">اسم الطالب/ة (مطلوب)</label><input id="report-student" required maxlength="50" placeholder="اكتب اسمك الكامل"></div>
           <div class="field"><label for="report-class">الفصل (مطلوب)</label><input id="report-class" required maxlength="20" placeholder="مثال: ٢/ب"></div>
-          <div class="field full" id="report-found-notice" hidden><div class="notice-alert" role="note">ملحوظة: الأشياء المفقودة عند مدير المدرسة.</div></div>
+          <div class="field full" id="report-notice"><div class="notice-alert" role="note">ملحوظة: الأشياء المفقودة عند مدير المدرسة.</div></div>
           <div class="field"><label for="report-owner-password">كلمة مرور الطالب لحذف البلاغ</label><input id="report-owner-password" type="password" required minlength="6" maxlength="100" autocomplete="new-password" placeholder="٦ أحرف على الأقل"></div>
           <div class="field"><label for="report-owner-password-confirm">تأكيد كلمة المرور</label><input id="report-owner-password-confirm" type="password" required minlength="6" maxlength="100" autocomplete="new-password" placeholder="اكتبها مرة أخرى"></div>
         </div>
@@ -500,6 +498,7 @@
     </div>
   </div>
   <div class="modal-backdrop" id="delete-modal" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title">
+    
     <div class="modal">
       <div class="modal-header">
         <div><h2 id="delete-modal-title">نقل البلاغ إلى تم التسليم</h2><p id="delete-report-name"></p></div>
@@ -563,8 +562,6 @@
     let pendingReportDelete = null;
     let pendingStatusEdit = null;
     const adminPasswordField = document.getElementById("admin-password");
-    const reportTypeField = document.getElementById("report-type");
-    const reportFoundNotice = document.getElementById("report-found-notice");
     const reportImageInput = document.getElementById("report-image");
     const reportImagePreview = document.getElementById("report-image-preview");
     const ownerPasswordField = document.getElementById("report-owner-password");
@@ -576,11 +573,6 @@
     };
     ownerPasswordField.addEventListener("input", validateOwnerPasswordConfirmation);
     ownerPasswordConfirmField.addEventListener("input", validateOwnerPasswordConfirmation);
-    function updateFoundNotice() {
-      const found = reportTypeField.value === "معثور عليه";
-      reportFoundNotice.hidden = !found;
-    }
-
     async function prepareReportImage(file) {
       if (!file) return "";
       if (!file.type.startsWith("image/")) throw new Error("اختار ملف صورة صالحًا.");
@@ -712,14 +704,12 @@
       restoreButton.hidden = !delivered;
 
       const existingNotice = card.querySelector(".notice-alert");
-      if (isFound && !existingNotice) {
+      if (!existingNotice) {
         const notice = document.createElement("div");
         notice.className = "notice-alert";
         notice.setAttribute("role", "note");
         notice.textContent = "ملحوظة: الأشياء المفقودة عند مدير المدرسة.";
         card.querySelector(".item-description").after(notice);
-      } else if (!isFound && existingNotice) {
-        existingNotice.remove();
       }
     }
 
@@ -1124,7 +1114,6 @@
       });
     });
     searchInput.addEventListener("input", filterItems);
-    reportTypeField.addEventListener("change", updateFoundNotice);
     reportImageInput.addEventListener("change", async () => {
       const file = reportImageInput.files[0];
       if (!file) {
@@ -1144,7 +1133,6 @@
         showToast(error.message || "تعذر تجهيز الصورة.");
       }
     });
-    updateFoundNotice();
     function sortItems() {
       [...grid.querySelectorAll(".item-card")]
         .sort((a, b) => sortSelect.value === "newest" ? Number(b.dataset.age) - Number(a.dataset.age) : Number(a.dataset.age) - Number(b.dataset.age))
@@ -1196,7 +1184,6 @@
         sortItems();
         reportForm.reset();
         validateOwnerPasswordConfirmation();
-        updateFoundNotice();
         reportImagePreview.hidden = true;
         reportImagePreview.removeAttribute("src");
         const today = new Date();
